@@ -118,20 +118,19 @@
             <div class="card-border">
               <div class="stamp-mini type">CONFIDENTIEL</div>
               <div class="card-eye">🕵️</div>
-              <p class="card-tap type">appuie pour révéler<br>ton identité</p>
+              <p class="card-tap type">appuie pour révéler</p>
             </div>
           </div>
           <div class="card-face card-front">
             <div class="card-border">
-              <p class="card-word-label type">ton mot secret :</p>
               <p id="card-word" class="card-word"></p>
               <p id="card-note" class="card-note type"></p>
+              <p class="card-tap-front type">re-appuie pour passer au suivant</p>
             </div>
           </div>
         </div>
       </div>
 
-      <button id="memorized-btn" class="btn btn-primary" data-action="next-reveal" disabled>Mémorisé, je cache 🤫</button>
       <p class="reveal-progress type" id="reveal-progress"></p>
     </div>
   </section>
@@ -142,7 +141,6 @@
       <div class="stamp type">BRIEFING</div>
       <h2 class="section-title big">Ordre de parole</h2>
       <p id="order-compo" class="sub type"></p>
-      <p class="sub type">chacun décrit son mot, dans cet ordre :</p>
       <ol id="order-list" class="order-list"></ol>
       <button class="btn btn-primary btn-big" data-action="goto-vote">Débat terminé → Vote</button>
     </div>
@@ -153,7 +151,6 @@
     <div class="pad center-col">
       <div class="stamp stamp-red type">INTERROGATOIRE</div>
       <h2 class="section-title big">Qui éliminez-vous ?</h2>
-      <p class="sub type">votez à voix haute, puis tapez sur le suspect</p>
       <div id="vote-grid" class="vote-grid"></div>
       <div id="vote-confirm" class="vote-confirm" hidden>
         <p class="type" id="vote-confirm-text"></p>
@@ -177,7 +174,7 @@
 
       <!-- Mr White guess -->
       <div id="white-guess" class="white-guess" hidden>
-        <p class="sub type">Mr. White, une dernière chance :<br>quel est le mot des civils ?</p>
+        <p class="sub type">Mr. White : quel est le mot des civils ?</p>
         <input id="white-guess-input" type="text" placeholder="Le mot des civils…" autocomplete="off">
         <button class="btn btn-primary" data-action="submit-white-guess">Tenter le coup</button>
       </div>
@@ -207,7 +204,7 @@
       <span class="topbar-title type">MOTS PERSOS</span>
     </header>
     <div class="pad">
-      <p class="sub type">Ajoutez vos private jokes : deux mots proches, un pour les civils, un pour l'undercover. Ils sont sauvegardés sur ce téléphone.</p>
+      <p class="sub type">Vos paires passent en priorité sur les mots de base. Sauvegardées sur ce téléphone.</p>
       <form id="add-pair-form" class="pair-form">
         <input id="pair-word-1" type="text" placeholder="Mot 1" maxlength="30" autocomplete="off">
         <input id="pair-word-2" type="text" placeholder="Mot 2" maxlength="30" autocomplete="off">

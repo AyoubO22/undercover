@@ -138,21 +138,22 @@
     return load(LS_CUSTOM, []);
   }
 
-  function allPairs() {
-    return [...WORD_PAIRS, ...getCustomPairs()];
-  }
-
   function pairKey(pair) {
     return normalize(pair[0]) + "|" + normalize(pair[1]);
   }
 
   function pickPair() {
-    const pairs = allPairs();
+    const customs = getCustomPairs();
     let used = load(LS_USED, []);
-    let available = pairs.filter((p) => !used.includes(pairKey(p)));
+    const unused = (list) => list.filter((p) => !used.includes(pairKey(p)));
+
+    // priorité aux mots persos, puis les mots de base
+    let available = unused(customs);
+    if (available.length === 0) available = unused(WORD_PAIRS);
     if (available.length === 0) {
+      // tout a été joué : on remet le compteur à zéro
       used = [];
-      available = pairs;
+      available = customs.length > 0 ? customs : WORD_PAIRS;
     }
     const pair = available[Math.floor(Math.random() * available.length)];
     used.push(pairKey(pair));
@@ -223,33 +224,36 @@
     wordEl.classList.remove("is-white");
 
     if (player.role === "white") {
-      wordEl.textContent = "· · ·";
+      wordEl.textContent = "MR. WHITE";
       wordEl.classList.add("is-white");
-      noteEl.textContent = "Aucun mot pour toi… tu es MR. WHITE ! Écoute les autres et improvise.";
+      noteEl.textContent = "aucun mot — improvise";
     } else {
       wordEl.textContent = player.role === "civil" ? g.civilWord : g.underWord;
-      noteEl.textContent = "Ne le dis à personne. Décris-le sans jamais le prononcer.";
+      noteEl.textContent = "";
     }
 
     $("#card").classList.remove("flipped");
-    $("#memorized-btn").disabled = true;
   }
 
   let revealLocked = false;
+  let flippedAt = 0;
 
-  function flipCard() {
+  function onCardTap() {
+    if (revealLocked) return;
     const card = $("#card");
-    if (revealLocked || card.classList.contains("flipped")) return;
-    card.classList.add("flipped");
-    $("#memorized-btn").disabled = false;
+    if (!card.classList.contains("flipped")) {
+      card.classList.add("flipped");
+      flippedAt = Date.now();
+    } else if (Date.now() - flippedAt > 600) {
+      // re-tap sur la carte = mot mémorisé, joueur suivant
+      nextReveal();
+    }
   }
 
   function nextReveal() {
-    if (revealLocked) return;
     revealLocked = true;
     const g = state.game;
     $("#card").classList.remove("flipped");
-    $("#memorized-btn").disabled = true;
 
     setTimeout(() => {
       revealLocked = false;
@@ -282,7 +286,7 @@
     const count = (role) => g.players.filter((p) => p.role === role).length;
     const parts = [`${count("civil")} civils`, `${count("undercover")} undercover`];
     if (count("white") > 0) parts.push(`${count("white")} mr. white`);
-    $("#order-compo").textContent = `dans la partie : ${parts.join(" · ")}`;
+    $("#order-compo").textContent = parts.join(" · ");
 
     const list = $("#order-list");
     list.innerHTML = "";
@@ -494,7 +498,6 @@
     "mw-plus": () => { state.mwCount++; clampRoles(); renderSetup(); },
     "mw-minus": () => { state.mwCount = Math.max(0, state.mwCount - 1); clampRoles(); renderSetup(); },
     "start-game": startGame,
-    "next-reveal": nextReveal,
     "goto-vote": () => { renderVote(); showScreen("screen-vote"); },
     "cancel-vote": renderVote,
     "confirm-vote": confirmVote,
@@ -508,7 +511,7 @@
     if (btn && actions[btn.dataset.action]) actions[btn.dataset.action]();
   });
 
-  $("#card").addEventListener("click", flipCard);
+  $("#card").addEventListener("click", onCardTap);
 
   $("#add-player-form").addEventListener("submit", (e) => {
     e.preventDefault();
