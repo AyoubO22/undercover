@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0c0d11">
+  <title>UNDERCOVER — Dossier Secret</title>
+  <meta name="description" content="Le jeu Undercover entre potes — trouvez l'infiltré.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Special+Elite&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>">
+</head>
+<body>
+
+  <div class="noise" aria-hidden="true"></div>
+
+  <!-- ================= ACCUEIL ================= -->
+  <section id="screen-home" class="screen active">
+    <div class="home-wrap">
+      <div class="dossier-tag type">DOSSIER N° 07 — CONFIDENTIEL</div>
+      <h1 class="logo">
+        <span class="logo-under">UNDER</span>
+        <span class="logo-cover">COVER<span class="logo-redact"></span></span>
+      </h1>
+      <p class="tagline type">— trouvez l'infiltré parmi vos potes —</p>
+
+      <div class="stamp stamp-home type">TOP SECRET</div>
+
+      <div class="home-actions">
+        <button class="btn btn-primary" data-action="goto-setup">▶ &nbsp;Nouvelle mission</button>
+        <button class="btn btn-ghost" data-action="goto-words">Mots persos</button>
+        <button class="btn btn-ghost" data-action="show-rules">Règles du jeu</button>
+      </div>
+
+      <p class="footer-note type">v1.0 — jeu à faire tourner sur UN seul téléphone</p>
+    </div>
+  </section>
+
+  <!-- ================= RÈGLES (modale) ================= -->
+  <div id="rules-modal" class="modal" hidden>
+    <div class="modal-card">
+      <h2 class="modal-title">Règles de la mission</h2>
+      <div class="rules-body">
+        <p><strong class="c-civil">■ Les Civils</strong> reçoivent tous le même mot.</p>
+        <p><strong class="c-under">■ Les Undercover</strong> reçoivent un mot différent mais proche.</p>
+        <p><strong class="c-white">■ Mr. White</strong> ne reçoit… aucun mot. Il improvise.</p>
+        <hr>
+        <p>1. Chacun regarde son mot en secret, puis passe le téléphone.</p>
+        <p>2. Dans l'ordre affiché, chacun décrit son mot d'UN mot ou d'une phrase, sans le dire.</p>
+        <p>3. Débattez, puis votez pour éliminer un suspect.</p>
+        <p>4. Si Mr. White est éliminé, il peut deviner le mot des civils pour gagner instantanément.</p>
+        <hr>
+        <p>🏆 <strong>Civils</strong> : éliminer tous les infiltrés.<br>
+           🏆 <strong>Undercover / Mr. White</strong> : survivre jusqu'à égaler les civils.</p>
+      </div>
+      <button class="btn btn-primary" data-action="close-rules">Compris</button>
+    </div>
+  </div>
+
+  <!-- ================= CONFIGURATION ================= -->
+  <section id="screen-setup" class="screen">
+    <header class="topbar">
+      <button class="back type" data-action="goto-home">← retour</button>
+      <span class="topbar-title type">RECRUTEMENT</span>
+    </header>
+
+    <div class="pad">
+      <h2 class="section-title">Les agents</h2>
+      <div id="player-list" class="player-list"></div>
+      <form id="add-player-form" class="add-row">
+        <input id="player-name-input" type="text" placeholder="Nom de l'agent…" maxlength="14" autocomplete="off">
+        <button type="submit" class="btn-add" aria-label="Ajouter">+</button>
+      </form>
+
+      <h2 class="section-title">Les rôles</h2>
+      <div class="role-config">
+        <div class="role-row">
+          <div>
+            <span class="role-name c-under">Undercover</span>
+            <span class="role-hint type">mot différent</span>
+          </div>
+          <div class="stepper">
+            <button data-action="uc-minus">−</button>
+            <span id="uc-count">1</span>
+            <button data-action="uc-plus">+</button>
+          </div>
+        </div>
+        <div class="role-row">
+          <div>
+            <span class="role-name c-white">Mr. White</span>
+            <span class="role-hint type">aucun mot</span>
+          </div>
+          <div class="stepper">
+            <button data-action="mw-minus">−</button>
+            <span id="mw-count">0</span>
+            <button data-action="mw-plus">+</button>
+          </div>
+        </div>
+        <p id="role-summary" class="role-summary type"></p>
+      </div>
+
+      <p id="setup-error" class="error type" hidden></p>
+      <button id="start-btn" class="btn btn-primary btn-big" data-action="start-game">Distribuer les cartes</button>
+    </div>
+  </section>
+
+  <!-- ================= DISTRIBUTION ================= -->
+  <section id="screen-reveal" class="screen">
+    <div class="reveal-wrap">
+      <p class="pass-label type">passe le téléphone à</p>
+      <h2 id="reveal-player-name" class="pass-name"></h2>
+
+      <div id="card" class="card">
+        <div class="card-inner">
+          <div class="card-face card-back">
+            <div class="card-border">
+              <div class="stamp-mini type">CONFIDENTIEL</div>
+              <div class="card-eye">🕵️</div>
+              <p class="card-tap type">appuie pour révéler<br>ton identité</p>
+            </div>
+          </div>
+          <div class="card-face card-front">
+            <div class="card-border">
+              <p class="card-word-label type">ton mot secret :</p>
+              <p id="card-word" class="card-word"></p>
+              <p id="card-note" class="card-note type"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="memorized-btn" class="btn btn-primary" data-action="next-reveal" disabled>Mémorisé, je cache 🤫</button>
+      <p class="reveal-progress type" id="reveal-progress"></p>
+    </div>
+  </section>
+
+  <!-- ================= ORDRE DE PAROLE ================= -->
+  <section id="screen-order" class="screen">
+    <div class="pad center-col">
+      <div class="stamp type">BRIEFING</div>
+      <h2 class="section-title big">Ordre de parole</h2>
+      <p class="sub type">chacun décrit son mot, dans cet ordre :</p>
+      <ol id="order-list" class="order-list"></ol>
+      <button class="btn btn-primary btn-big" data-action="goto-vote">Débat terminé → Vote</button>
+    </div>
+  </section>
+
+  <!-- ================= VOTE ================= -->
+  <section id="screen-vote" class="screen">
+    <div class="pad center-col">
+      <div class="stamp stamp-red type">INTERROGATOIRE</div>
+      <h2 class="section-title big">Qui éliminez-vous ?</h2>
+      <p class="sub type">votez à voix haute, puis tapez sur le suspect</p>
+      <div id="vote-grid" class="vote-grid"></div>
+      <div id="vote-confirm" class="vote-confirm" hidden>
+        <p class="type" id="vote-confirm-text"></p>
+        <div class="vote-confirm-btns">
+          <button class="btn btn-ghost" data-action="cancel-vote">Annuler</button>
+          <button class="btn btn-danger" data-action="confirm-vote">Éliminer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RÉVÉLATION ÉLIMINÉ ================= -->
+  <section id="screen-elim" class="screen">
+    <div class="pad center-col">
+      <p class="pass-label type">agent éliminé</p>
+      <h2 id="elim-name" class="pass-name"></h2>
+      <div id="elim-role-card" class="elim-role">
+        <span id="elim-role-text"></span>
+      </div>
+      <p id="elim-comment" class="sub type"></p>
+
+      <!-- Mr White guess -->
+      <div id="white-guess" class="white-guess" hidden>
+        <p class="sub type">Mr. White, une dernière chance :<br>quel est le mot des civils ?</p>
+        <input id="white-guess-input" type="text" placeholder="Le mot des civils…" autocomplete="off">
+        <button class="btn btn-primary" data-action="submit-white-guess">Tenter le coup</button>
+      </div>
+
+      <button id="continue-btn" class="btn btn-primary btn-big" data-action="continue-game">Continuer la mission</button>
+    </div>
+  </section>
+
+  <!-- ================= FIN DE PARTIE ================= -->
+  <section id="screen-end" class="screen">
+    <div class="pad center-col">
+      <div id="end-stamp" class="stamp stamp-big type">MISSION TERMINÉE</div>
+      <h2 id="end-title" class="end-title"></h2>
+      <p id="end-words" class="sub type"></p>
+      <div id="end-roles" class="end-roles"></div>
+      <div class="home-actions">
+        <button class="btn btn-primary btn-big" data-action="replay">↻ Rejouer (mêmes agents)</button>
+        <button class="btn btn-ghost" data-action="goto-home">Retour à l'accueil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MOTS PERSOS ================= -->
+  <section id="screen-words" class="screen">
+    <header class="topbar">
+      <button class="back type" data-action="goto-home">← retour</button>
+      <span class="topbar-title type">MOTS PERSOS</span>
+    </header>
+    <div class="pad">
+      <p class="sub type">Ajoutez vos private jokes : deux mots proches, un pour les civils, un pour l'undercover. Ils sont sauvegardés sur ce téléphone.</p>
+      <form id="add-pair-form" class="pair-form">
+        <input id="pair-word-1" type="text" placeholder="Mot 1" maxlength="30" autocomplete="off">
+        <input id="pair-word-2" type="text" placeholder="Mot 2" maxlength="30" autocomplete="off">
+        <button type="submit" class="btn btn-primary">+ Ajouter la paire</button>
+      </form>
+      <p id="pair-count" class="type sub"></p>
+      <div id="custom-pairs" class="custom-pairs"></div>
+    </div>
+  </section>
+
+  <script src="js/words.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
