@@ -78,6 +78,8 @@
 
     $("#uc-count").textContent = state.ucCount;
     $("#mw-count").textContent = state.mwCount;
+    $("#mw-hint").textContent =
+      state.players.length < 4 ? "dès 4 joueurs" : "aucun mot";
 
     const civils = state.players.length - state.ucCount - state.mwCount;
     $("#role-summary").textContent =
@@ -93,12 +95,15 @@
 
   function clampRoles() {
     const max = maxInfiltres();
+    // toujours au moins 1 undercover
+    if (state.ucCount < 1) state.ucCount = 1;
+    if (state.ucCount > max) state.ucCount = max;
+    // Mr. White : uniquement à partir de 4 joueurs (règle officielle)
+    if (state.players.length < 4) state.mwCount = 0;
+    if (state.mwCount < 0) state.mwCount = 0;
     if (state.ucCount + state.mwCount > max) {
       state.mwCount = Math.max(0, max - state.ucCount);
-      if (state.ucCount > max) state.ucCount = max;
     }
-    if (state.ucCount < 0) state.ucCount = 0;
-    if (state.ucCount + state.mwCount === 0) state.ucCount = 1;
   }
 
   function setupError(msg) {
@@ -165,8 +170,13 @@
       return;
     }
     clampRoles();
-    if (state.ucCount + state.mwCount > maxInfiltres()) {
-      setupError("Trop d'infiltrés : les civils doivent rester majoritaires.");
+    if (
+      state.ucCount < 1 ||
+      state.ucCount + state.mwCount > maxInfiltres() ||
+      (state.mwCount > 0 && state.players.length < 4)
+    ) {
+      renderSetup();
+      setupError("Configuration invalide : au moins 1 undercover, Mr. White dès 4 joueurs, civils majoritaires.");
       return;
     }
 
@@ -268,6 +278,12 @@
   }
 
   function renderOrder() {
+    const g = state.game;
+    const count = (role) => g.players.filter((p) => p.role === role).length;
+    const parts = [`${count("civil")} civils`, `${count("undercover")} undercover`];
+    if (count("white") > 0) parts.push(`${count("white")} mr. white`);
+    $("#order-compo").textContent = `dans la partie : ${parts.join(" · ")}`;
+
     const list = $("#order-list");
     list.innerHTML = "";
     speakingOrder().forEach((p, i) => {
