@@ -66,4 +66,9 @@ const WORD_PAIRS = [
   ["Chance", "Destin"],
   ["Amour", "Amitié"],
   ["Mensonge", "Secret"],
+
+  // --- Private jokes ---
+  ["Mer", "Rivière"],
+  ["Yazid", "Zakaria"],
+  ["Izac", "Anakin"],
 ];
