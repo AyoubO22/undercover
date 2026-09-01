@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e0c">
+<title>BUREAU DES ENTRÉES — Ayoub Ouaadoud</title>
+<meta name="description" content="Portfolio interactif : poste de contrôle, documents à inspecter, tampons et terminal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Special+Elite&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛂</text></svg>">
+</head>
+<body class="booting">
+
+<!-- ================= HABILLAGE CRT ================= -->
+<div class="crt" aria-hidden="true">
+  <div class="crt-lines"></div>
+  <div class="crt-glow"></div>
+  <div class="crt-flicker"></div>
+</div>
+
+<!-- ================= 1. AMORÇAGE ================= -->
+<section id="layer-boot" class="layer active">
+  <div class="boot-wrap">
+    <pre id="boot-log" class="boot-log"></pre>
+    <button id="boot-enter" class="boot-enter" hidden>
+      &gt; APPUYEZ POUR PRENDRE VOTRE POSTE
+    </button>
+    <p class="boot-hint" id="boot-hint" hidden>le son est désactivé — vous pourrez l'allumer en haut à droite</p>
+  </div>
+</section>
+
+<!-- ================= 2. BRIEFING DU JOUR ================= -->
+<section id="layer-brief" class="layer">
+  <div class="brief">
+    <p class="brief-day" id="brief-day">JOUR 1</p>
+    <h1 class="brief-title" id="brief-title">BUREAU DES ENTRÉES</h1>
+    <div class="brief-rule"></div>
+    <p class="brief-line" id="brief-line"></p>
+    <ul class="brief-list" id="brief-list"></ul>
+    <button id="brief-go" class="btn btn-stamp">COMMENCER LE SERVICE</button>
+  </div>
+</section>
+
+<!-- ================= 3. LE POSTE ================= -->
+<main id="layer-desk" class="layer">
+
+  <header class="hud">
+    <div class="hud-left">
+      <span class="hud-seal">◼</span>
+      <span class="hud-state" id="hud-state">ÉTAT DE BRUXELLIA</span>
+      <span class="hud-sep">·</span>
+      <span id="hud-day">JOUR 1</span>
+      <span class="hud-sep">·</span>
+      <span id="hud-clock">09:00</span>
+    </div>
+    <div class="hud-right">
+      <button class="hud-btn" id="btn-dossier" title="Dossiers approuvés">▤ <span id="hud-count">0</span>/<span id="hud-total">0</span></button>
+      <button class="hud-btn" id="btn-eggs" title="Anomalies détectées">◈ <span id="egg-count">0</span>/<span id="egg-total">0</span></button>
+      <button class="hud-btn" id="btn-sound" title="Son" aria-pressed="false">♪ OFF</button>
+      <button class="hud-btn" id="btn-help" title="Aide">?</button>
+    </div>
+  </header>
+
+  <!-- ---- guichet ---- -->
+  <section class="booth">
+    <div class="booth-wall">
+      <div class="wall-poster" id="wall-poster">
+        <span class="poster-glyph">▲</span>
+        <span class="poster-text" id="poster-text">L'ORDRE PAR LE FORMULAIRE</span>
+      </div>
+      <div class="wall-clock" aria-hidden="true"><span class="wall-clock-hand"></span></div>
+      <div class="wall-plant" id="wall-plant" title="…">❦</div>
+    </div>
+
+    <div class="booth-window">
+      <div class="window-frame">
+        <div class="window-glass">
+          <div class="queue-shadows" id="queue-shadows"></div>
+          <div class="applicant" id="applicant" hidden>
+            <div class="applicant-portrait" id="applicant-portrait"></div>
+          </div>
+          <div class="window-empty" id="window-empty">— GUICHET LIBRE —</div>
+        </div>
+        <div class="window-sill"></div>
+      </div>
+
+      <div class="booth-side">
+        <div class="queue-box">
+          <span class="queue-label">EN ATTENTE</span>
+          <span class="queue-num" id="queue-num">0</span>
+        </div>
+        <button class="buzzer" id="buzzer">
+          <span class="buzzer-dome"></span>
+          <span class="buzzer-label">SUIVANT</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="dialogue" id="dialogue" hidden>
+      <span class="dialogue-who" id="dialogue-who"></span>
+      <p class="dialogue-text" id="dialogue-text"></p>
+    </div>
+  </section>
+
+  <!-- ---- bureau ---- -->
+  <section class="desk" id="desk">
+    <div class="desk-edge"></div>
+    <div class="desk-surface" id="desk-surface">
+      <p class="desk-hint" id="desk-hint">Appuyez sur <b>SUIVANT</b> pour appeler le premier dossier.</p>
+    </div>
+
+    <aside class="tray">
+      <button class="tool tool-book" id="tool-book">
+        <span class="tool-ico">▤</span><span class="tool-name">RÈGLEMENT</span>
+      </button>
+      <button class="tool tool-term" id="tool-term">
+        <span class="tool-ico">▮</span><span class="tool-name">TERMINAL</span>
+      </button>
+      <div class="stamps">
+        <button class="stamp-tool stamp-ok" id="stamp-ok" data-verdict="ok">
+          <span class="stamp-face">APPROUVÉ</span>
+        </button>
+        <button class="stamp-tool stamp-no" id="stamp-no" data-verdict="no">
+          <span class="stamp-face">REFUSÉ</span>
+        </button>
+      </div>
+      <button class="tool tool-lamp" id="tool-lamp" title="Lampe de bureau">
+        <span class="tool-ico">☼</span><span class="tool-name">LAMPE</span>
+      </button>
+    </aside>
+  </section>
+
+  <div class="stamp-cursor" id="stamp-cursor" hidden></div>
+</main>
+
+<!-- ================= SUPERPOSITIONS ================= -->
+
+<!-- règlement -->
+<div class="overlay" id="ov-book" hidden>
+  <div class="book">
+    <div class="book-head">
+      <span class="book-title">RÈGLEMENT DU BUREAU</span>
+      <button class="x" data-close="ov-book">✕</button>
+    </div>
+    <nav class="book-tabs" id="book-tabs"></nav>
+    <div class="book-page" id="book-page"></div>
+  </div>
+</div>
+
+<!-- terminal -->
+<div class="overlay" id="ov-term" hidden>
+  <div class="terminal">
+    <div class="term-head">
+      <span class="term-title">TERMINAL DE SERVICE — v0.9</span>
+      <button class="x" data-close="ov-term">✕</button>
+    </div>
+    <div class="term-body" id="term-body"></div>
+    <form class="term-form" id="term-form" autocomplete="off">
+      <span class="term-prompt">inspecteur@bureau:~$</span>
+      <input class="term-input" id="term-input" spellcheck="false" autocomplete="off">
+    </form>
+  </div>
+</div>
+
+<!-- dossiers approuvés -->
+<div class="overlay" id="ov-dossier" hidden>
+  <div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">DOSSIERS TRAITÉS</span>
+      <button class="x" data-close="ov-dossier">✕</button>
+    </div>
+    <div class="panel-body" id="dossier-body"></div>
+  </div>
+</div>
+
+<!-- anomalies / easter eggs -->
+<div class="overlay" id="ov-eggs" hidden>
+  <div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">REGISTRE DES ANOMALIES</span>
+      <button class="x" data-close="ov-eggs">✕</button>
+    </div>
+    <div class="panel-body" id="eggs-body"></div>
+  </div>
+</div>
+
+<!-- aide -->
+<div class="overlay" id="ov-help" hidden>
+  <div class="panel panel-sm">
+    <div class="panel-head">
+      <span class="panel-title">CONSIGNES</span>
+      <button class="x" data-close="ov-help">✕</button>
+    </div>
+    <div class="panel-body">
+      <ul class="help-list">
+        <li><b>SUIVANT</b> — appelle le dossier suivant au guichet.</li>
+        <li><b>Clic sur un document</b> — l'agrandit. Re-clic : le repose.</li>
+        <li><b>Glisser</b> — déplace les papiers sur le bureau.</li>
+        <li><b>APPROUVÉ / REFUSÉ</b> — prenez le tampon, puis frappez le passeport.</li>
+        <li><b>RÈGLEMENT</b> — qui je suis, ce que je sais faire, comment me joindre.</li>
+        <li><b>TERMINAL</b> — tapez <code>aide</code>. Certaines commandes ne sont pas dans la liste.</li>
+        <li><b>◈</b> — anomalies cachées dans le bureau. Elles ne se donnent pas.</li>
+      </ul>
+      <p class="help-foot">Aucun verdict n'est le bon. Le bureau s'en moque. Vous non.</p>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/portraits.js"></script>
+<script src="js/eggs.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/desk.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
