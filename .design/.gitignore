@@ -1,0 +1,4 @@
+# sorties régénérables : `node gen-*.mjs` puis seed-canvas
+*.dc.html
+busts.json
+bureau-des-entrees.html

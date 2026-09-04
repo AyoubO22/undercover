@@ -1,0 +1,31 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "ÉCRANS" },
+    { "id": "page-2", "name": "MOBILE & PERSONNAGES" },
+    { "id": "page-3", "name": "SPÉCIFICATIONS" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html",            "page": "page-1", "x": 0,    "y": 0,    "w": 1440, "h": 900,  "title": "Le poste — écran principal" },
+    { "file": "Amorcage.dc.html",        "page": "page-1", "x": 1560, "y": 0,    "w": 1440, "h": 900,  "title": "Amorçage" },
+    { "file": "Briefing.dc.html",        "page": "page-1", "x": 3120, "y": 0,    "w": 1440, "h": 900,  "title": "Briefing du jour" },
+    { "file": "DocumentAgrandi.dc.html", "page": "page-1", "x": 0,    "y": 1120, "w": 1440, "h": 900,  "title": "Document agrandi + tampon" },
+    { "file": "Reglement.dc.html",       "page": "page-1", "x": 1560, "y": 1120, "w": 1440, "h": 900,  "title": "Règlement — compétences" },
+    { "file": "Terminal.dc.html",        "page": "page-1", "x": 3120, "y": 1120, "w": 1440, "h": 900,  "title": "Terminal de service" },
+    { "file": "Anomalies.dc.html",       "page": "page-1", "x": 0,    "y": 2240, "w": 1440, "h": 900,  "title": "Registre des anomalies" },
+
+    { "file": "Mobile.dc.html",          "page": "page-2", "x": 0,    "y": 0,    "w": 390,  "h": 844,  "title": "Mobile — guichet" },
+    { "file": "MobilePapiers.dc.html",   "page": "page-2", "x": 510,  "y": 0,    "w": 390,  "h": 844,  "title": "Mobile — papiers" },
+    { "file": "Personnages.dc.html",     "page": "page-2", "x": 1020, "y": 0,    "w": 1440, "h": 1000, "title": "Planche des candidats" },
+
+    { "file": "Specs.dc.html",           "page": "page-3", "x": 0,    "y": 0,    "w": 1440, "h": 1320, "title": "Spécifications" }
+  ],
+  "annotations": [
+    { "id": "note-ecrans", "page": "page-1", "x": 0, "y": -330, "w": 620,
+      "text": "ÉCRAN PRINCIPAL\nCe qui change par rapport au site actuel :\n· lampe de bureau tramée au-dessus du guichet\n· grille de haut-parleur sous la vitre, plaque « GUICHET N° 4 »\n· sous-main vert aux coins usés, trace de tasse, stylo\n· tampons en manche de bois plutôt qu'en boutons plats\n· trombone sur la note de service" },
+    { "id": "note-mobile", "page": "page-2", "x": 0, "y": -230, "w": 480,
+      "text": "MOBILE\nAucune fausse barre iOS : le téléphone dessine la sienne par-dessus.\nLes papiers passent en pleine largeur et s'empilent ; les deux tampons\ntiennent la moitié de la barre du bas (cible tactile ≥ 44 px)." },
+    { "id": "note-specs", "page": "page-3", "x": 0, "y": -230, "w": 560,
+      "text": "SPÉCIFICATIONS\nValeurs à reprendre telles quelles.\nRègle absolue : aucun rayon d'arrondi, aucune ombre floue,\ndes bordures de 2 px, des ombres décalées à 45°." }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}
