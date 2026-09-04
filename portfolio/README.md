@@ -1,90 +1,50 @@
-# ✦ Site de Grâce — portfolio interactif
+# Portfolio — quatre mondes
 
-Un portfolio en forme de halte : une lueur qui brûle dans le noir, un menu gravé,
-et un **inventaire de dix objets** — chaque projet est une pièce que l'on examine,
-avec son sceau, sa description et ses effets.
+Le même travail, présenté dans quatre directions artistiques.
+**Dix projets réels**, les mêmes faits et les mêmes liens dans chaque version :
+seuls la métaphore et l'habillage changent.
 
-**▶ Ouvrir :** https://ayoubo22.github.io/undercover/portfolio/
+**▶ Comparer les quatre :** https://ayoubo22.github.io/undercover/portfolio/
 
-Hommage à l'esthétique des jeux d'action-RPG en monde sombre — jamais une copie
-de leurs marques ni de leurs ressources : tout est dessiné ici.
+| Monde | Dossier | Le principe |
+|---|---|---|
+| **Site de Grâce** | [`grace/`](grace/) | Dark fantasy. Une lueur qui brûle dans le noir, un inventaire de dix objets, une description d'objet pour chacun. |
+| **La Faille** | [`faille/`](faille/) | Hextech. Chaque projet est un champion : un titre, des rôles, cinq sorts, des statistiques, et un bouton VERROUILLER. |
+| **La Séance** | [`cinema/`](cinema/) | Filmographie. Dix affiches composées au code, une fiche technique par film, un générique de fin qui défile. |
+| **Épisodes** | [`anime/`](anime/) | Papier clair, aplats francs, trames de points. Chaque projet est un épisode avec son image-clé et sa transition. |
 
----
+## Choisir
 
-## Ce qu'il y a dedans
+Chaque dossier est **autonome** : il contient son `index.html`, son style et ses scripts,
+et ne dépend d'aucun fichier partagé.
 
-| | |
-|---|---|
-| **Site de grâce** | la halte : lueur animée, menu, et la possibilité de simplement se reposer |
-| **Inventaire** | dix objets à examiner — sceau, rareté, description, effets, liens |
-| **Attributs** | ce que je sais faire, en jauges |
-| **Chronique** | ce qui a précédé, année par année |
-| **Missives** | messages laissés au sol : courriel, GitHub, LinkedIn |
-| **Souvenirs** | huit secrets cachés dans le lieu, avec leur registre |
+Pour n'en garder qu'un :
 
-Aucune librairie, aucune image, aucun fichier son : les sceaux sont du dessin
-vectoriel généré au code, les braises et la lueur sont peintes sur canvas, et les
-bruitages sont synthétisés en WebAudio.
-
-Navigation complète au clavier : flèches, Entrée, Échap.
-
----
+1. supprimez les trois autres dossiers ;
+2. remontez le contenu du dossier retenu d'un niveau (ou laissez-le où il est
+   et pointez le lien vers `portfolio/<monde>/`) ;
+3. adaptez cette page d'accueil, ou remplacez-la par le monde choisi.
 
 ## Modifier le contenu
 
-**Tout tient dans [`js/data.js`](js/data.js).** Le reste n'a pas besoin d'être touché.
+Dans chaque monde, **tout le contenu tient dans `js/data.js`** — c'est le seul
+fichier à toucher pour ajouter un projet, changer un texte ou une compétence.
+Les noms des tableaux suivent la métaphore du monde :
 
-### Ajouter un projet
+| Monde | Le tableau des projets | Le reste |
+|---|---|---|
+| `grace/` | `INVENTAIRE` | `ATTRIBUTS`, `CHRONIQUE`, `MISSIVES` |
+| `faille/` | `CHAMPIONS` | `MAITRISES`, `HISTORIQUE` |
+| `cinema/` | `FILMS` | `COMPETENCES`, `PARCOURS` |
+| `anime/` | `EPISODES` | `PERSONNAGE.capacites`, `ANNEES` |
 
-Un objet de plus dans le tableau `INVENTAIRE` — il apparaît dans les casiers avec
-son propre sceau, tiré de sa graine :
+## Points communs aux quatre
 
-```js
-{
-  id: "mon-projet",
-  nom: "NOM DE L'OBJET",
-  type: "Application web · React",
-  graine: 4242,            // n'importe quel nombre → un sceau différent
-  rarete: 2,               // 1 à 3 — 3 pour une pièce maîtresse
-  poids: "12 écrans",      // ce que vous voulez : taille, durée, portée
-  annee: "2026",
-  description: "Une phrase qui dit ce que la chose est, sans énumérer.",
-  effets: [
-    "Un fait technique",
-    "Un autre",
-  ],
-  liens: [{ label: "CODE SOURCE", url: "https://…" }],
-}
-```
-
-La `description` est le cœur du format : elle doit être évocatrice **et** vraie.
-Les `effets` portent les faits — c'est là que vont les chiffres et les noms de
-technologies.
-
-### Ajouter un souvenir (easter egg)
-
-1. Une entrée dans `SOUVENIRS` ([`js/eggs.js`](js/eggs.js)) : `id`, `nom`, `indice`, `secret`.
-2. Un appel à `EGGS.trouver("son-id")` là où il doit se déclencher.
-
-Le compteur, le registre et la sauvegarde suivent tout seuls.
-
-### Changer les attributs, la chronique, les missives
-
-Les tableaux `ATTRIBUTS`, `MEMOIRE`, `CHRONIQUE` et `MISSIVES`, toujours dans
-`js/data.js`.
-
----
-
-## Fichiers
-
-```
-index.html          les écrans
-css/portfolio.css   tout le style
-js/data.js          ← LE CONTENU : objets, attributs, chronique, missives
-js/sigils.js        sceaux héraldiques générés depuis une graine
-js/ambiance.js      braises et lueur du site de grâce (canvas)
-js/audio.js         cloches et souffles synthétisés (WebAudio)
-js/eggs.js          registre des souvenirs
-js/ui.js            écrans, inventaire, fiches, clavier
-js/main.js          mise en marche et branchements
-```
+- **Aucune image n'est chargée.** Emblèmes, sceaux, affiches et vignettes sont
+  composés au code à partir d'une graine ; les lueurs, grains et trames sont du CSS
+  ou du canvas.
+- **Aucune librairie.** HTML, CSS et JavaScript purs.
+- Adapté au mobile, et `prefers-reduced-motion` respecté.
+- `grace/` ajoute des bruitages synthétisés en WebAudio et un registre de huit
+  secrets ; les trois autres n'ont pas encore le leur — il sera développé pour
+  le monde retenu.

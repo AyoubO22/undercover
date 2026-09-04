@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#08070a">
+<title>AYOUB OUAADOUD — Site de Grâce</title>
+<meta name="description" content="Portfolio interactif : un site de grâce, un inventaire, et dix objets à examiner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a227' stroke-width='6'/><circle cx='50' cy='50' r='10' fill='%23f0dfa8'/></svg>">
+</head>
+<body>
+
+<canvas id="braises" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ================= OUVERTURE ================= -->
+<section id="ecran-ouverture" class="ecran active">
+  <div class="ouverture-bloc">
+    <p class="ouverture-sur">PORTFOLIO</p>
+    <h1 class="ouverture-titre">AYOUB<span class="ouverture-sep">·</span>OUAADOUD</h1>
+    <p class="ouverture-sous">DÉVELOPPEUR — BRUXELLES</p>
+    <div class="filet"><span class="filet-losange"></span></div>
+    <button id="entrer" class="entrer">APPUYEZ SUR ENTRÉE</button>
+    <p class="ouverture-note">le son est éteint — vous pourrez l'allumer en haut à droite</p>
+  </div>
+</section>
+
+<!-- ================= LE JEU ================= -->
+<main id="jeu" hidden>
+
+  <header class="bandeau">
+    <button class="bandeau-retour" id="btn-retour" hidden>◄ RETOUR</button>
+    <span class="bandeau-porteur" id="bandeau-porteur">AYOUB OUAADOUD</span>
+    <span class="bandeau-lieu">NIVEAU <b id="bandeau-niveau">26</b></span>
+    <nav class="bandeau-actions">
+      <button class="lien-sobre" id="btn-souvenirs">SOUVENIRS <b id="cpt-souvenirs">0</b>/<b id="cpt-total">8</b></button>
+      <button class="lien-sobre" id="btn-son" aria-pressed="false">SON : ÉTEINT</button>
+    </nav>
+  </header>
+
+  <!-- ---- site de grâce ---- -->
+  <section id="ecran-grace" class="ecran active">
+    <canvas id="lueur" aria-hidden="true"></canvas>
+    <div class="grace-bloc">
+      <p class="grace-sur">SITE DE GRÂCE DÉCOUVERT</p>
+      <h2 class="grace-titre">L'ATELIER</h2>
+      <nav class="menu" id="menu">
+        <button class="menu-item" data-ecran="ecran-inventaire"><span class="menu-marque"></span>INVENTAIRE<span class="menu-note">dix objets</span></button>
+        <button class="menu-item" data-ecran="ecran-attributs"><span class="menu-marque"></span>ATTRIBUTS<span class="menu-note">ce que je sais faire</span></button>
+        <button class="menu-item" data-ecran="ecran-chronique"><span class="menu-marque"></span>CHRONIQUE<span class="menu-note">ce qui a précédé</span></button>
+        <button class="menu-item" data-ecran="ecran-missives"><span class="menu-marque"></span>MISSIVES<span class="menu-note">me joindre</span></button>
+        <button class="menu-item menu-repos" data-action="repos"><span class="menu-marque"></span>SE REPOSER<span class="menu-note">reprendre souffle</span></button>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ---- inventaire ---- -->
+  <section id="ecran-inventaire" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">INVENTAIRE</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+    </div>
+    <div class="inv">
+      <div class="inv-casiers" id="inv-casiers" role="listbox" aria-label="Objets"></div>
+      <article class="fiche" id="fiche"></article>
+    </div>
+  </section>
+
+  <!-- ---- attributs ---- -->
+  <section id="ecran-attributs" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">ATTRIBUTS</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+    </div>
+    <div class="attr-corps">
+      <div class="attr-porteur">
+        <button class="attr-niveau" id="attr-niveau">
+          <span class="attr-niveau-lab">NIVEAU</span>
+          <span class="attr-niveau-val">26</span>
+          <span class="attr-niveau-note">un par dépôt public ou privé</span>
+        </button>
+      </div>
+      <div class="attr-liste" id="attr-liste"></div>
+      <div class="attr-memoire" id="attr-memoire"></div>
+    </div>
+  </section>
+
+  <!-- ---- chronique ---- -->
+  <section id="ecran-chronique" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">CHRONIQUE</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+    </div>
+    <ol class="chronique" id="chronique"></ol>
+  </section>
+
+  <!-- ---- missives ---- -->
+  <section id="ecran-missives" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">MISSIVES</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+      <p class="ecran-note">Messages laissés au sol par le porteur.</p>
+    </div>
+    <div class="missives" id="missives"></div>
+  </section>
+</main>
+
+<!-- ================= SURIMPRESSIONS ================= -->
+<div id="carton" class="carton" hidden><span class="carton-nom"></span></div>
+<div id="peri" class="peri" hidden><span>VOUS AVEZ PÉRI</span></div>
+
+<div id="voile-souvenirs" class="voile" hidden>
+  <div class="panneau">
+    <div class="panneau-tete">
+      <h3>SOUVENIRS</h3>
+      <button class="panneau-fermer" data-fermer="voile-souvenirs">✕</button>
+    </div>
+    <div class="panneau-corps" id="liste-souvenirs"></div>
+  </div>
+</div>
+
+<div id="annonce" class="annonce" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ambiance.js"></script>
+<script src="js/sigils.js"></script>
+<script src="js/eggs.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

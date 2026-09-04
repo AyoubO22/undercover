@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f4f1ea">
+<title>AYOUB OUAADOUD — 作品集</title>
+<meta name="description" content="Portfolio interactif : dix projets présentés comme une série en dix épisodes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23f4f1ea'/><circle cx='50' cy='50' r='30' fill='%23e2382c'/><path d='M40 32 L72 50 L40 68 Z' fill='%23f4f1ea'/></svg>">
+</head>
+<body>
+
+<div class="trame-fond" aria-hidden="true"></div>
+
+<!-- ================= OUVERTURE ================= -->
+<section id="ecran-ouverture" class="ecran active">
+  <div class="lignes-vitesse" aria-hidden="true"></div>
+  <div class="ouv">
+    <p class="ouv-kana">アユーブ・ワードゥド</p>
+    <h1 class="ouv-titre">AYOUB<br>OUAADOUD</h1>
+    <div class="ouv-bande"><span>作品集 — DIX ÉPISODES</span></div>
+    <p class="ouv-sous">DÉVELOPPEUR · BRUXELLES · 2024—2026</p>
+    <button id="entrer" class="bouton bouton-rouge">▶ &nbsp;LANCER LA LECTURE</button>
+  </div>
+</section>
+
+<!-- ================= SÉRIE ================= -->
+<main id="app" hidden>
+
+  <header class="tete">
+    <span class="tete-marque">作品集</span>
+    <span class="tete-nom">AYOUB OUAADOUD</span>
+    <nav class="onglets" id="onglets">
+      <button class="onglet actif" data-ecran="ecran-episodes">ÉPISODES</button>
+      <button class="onglet" data-ecran="ecran-personnage">人物 &nbsp;PERSONNAGE</button>
+      <button class="onglet" data-ecran="ecran-annees">年表 &nbsp;CHRONOLOGIE</button>
+      <button class="onglet" data-ecran="ecran-contact">連絡 &nbsp;CONTACT</button>
+    </nav>
+  </header>
+
+  <!-- ---- épisodes ---- -->
+  <section id="ecran-episodes" class="ecran active">
+    <div class="page">
+      <div class="titre-bloc">
+        <span class="titre-kana">全10話</span>
+        <h2 class="titre-page">ÉPISODES</h2>
+      </div>
+      <div class="episodes" id="episodes"></div>
+    </div>
+  </section>
+
+  <!-- ---- personnage ---- -->
+  <section id="ecran-personnage" class="ecran">
+    <div class="page page-etroite">
+      <div class="titre-bloc">
+        <span class="titre-kana">人物紹介</span>
+        <h2 class="titre-page">PERSONNAGE</h2>
+      </div>
+      <div class="perso" id="perso"></div>
+      <h3 class="sous-titre">能力 &nbsp;CAPACITÉS</h3>
+      <div class="capacites" id="capacites"></div>
+    </div>
+  </section>
+
+  <!-- ---- chronologie ---- -->
+  <section id="ecran-annees" class="ecran">
+    <div class="page page-etroite">
+      <div class="titre-bloc">
+        <span class="titre-kana">年表</span>
+        <h2 class="titre-page">CHRONOLOGIE</h2>
+      </div>
+      <div class="annees" id="annees"></div>
+    </div>
+  </section>
+
+  <!-- ---- contact ---- -->
+  <section id="ecran-contact" class="ecran">
+    <div class="page page-etroite">
+      <div class="titre-bloc">
+        <span class="titre-kana">連絡先</span>
+        <h2 class="titre-page">CONTACT</h2>
+      </div>
+      <div class="contacts" id="contacts"></div>
+      <p class="a-suivre">続く &nbsp;— &nbsp;À SUIVRE</p>
+    </div>
+  </section>
+</main>
+
+<!-- ================= DÉTAIL D'ÉPISODE ================= -->
+<div id="detail" class="detail-voile" hidden>
+  <article class="detail" id="detail-corps"></article>
+</div>
+
+<!-- ================= EYECATCH ================= -->
+<div id="eyecatch" class="eyecatch" hidden><span class="eyecatch-texte"></span></div>
+
+<script src="js/data.js"></script>
+<script src="js/vignettes.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

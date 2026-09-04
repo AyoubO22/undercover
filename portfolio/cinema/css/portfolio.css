@@ -1,0 +1,285 @@
+/* ============================================================
+   LA SÉANCE — feuille de style
+   Noir de salle, ivoire de pellicule, rouge d'affiche.
+   Didone pour les titres, condensé pour les génériques.
+   ============================================================ */
+
+:root {
+  --noir:    #0b0b0c;
+  --noir-2:  #131315;
+  --ivoire:  #e8e2d6;
+  --ivoire-2:rgba(232, 226, 214, 0.62);
+  --ivoire-3:rgba(232, 226, 214, 0.34);
+  --rouge:   #c1272d;
+  --filet:   rgba(232, 226, 214, 0.16);
+
+  --titre: "Bodoni Moda", "Didot", Georgia, serif;
+  --corps: "Archivo", system-ui, sans-serif;
+  --etroit: "Archivo Narrow", "Archivo", sans-serif;
+  --bande: 46px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+
+body {
+  background: var(--noir);
+  color: var(--ivoire);
+  font-family: var(--corps);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+a { color: var(--ivoire); text-decoration: none; }
+
+/* ---------- pellicule ---------- */
+.grain {
+  position: fixed; inset: 0; z-index: 90; pointer-events: none; opacity: 0.32; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainer 0.6s steps(3) infinite;
+}
+@keyframes grainer {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-2%, 1%); }
+  66% { transform: translate(1%, -2%); }
+}
+.scintillement {
+  position: fixed; inset: 0; z-index: 91; pointer-events: none;
+  background: rgba(232, 226, 214, 0.03); animation: scintiller 5s steps(1) infinite;
+}
+@keyframes scintiller { 0%, 94%, 100% { opacity: 0; } 96% { opacity: 1; } 98% { opacity: 0.4; } }
+
+.bande {
+  position: fixed; left: 0; right: 0; height: var(--bande); background: #060607; z-index: 92; pointer-events: none;
+}
+.bande-haut { top: 0; border-bottom: 1px solid rgba(0, 0, 0, 0.9); }
+.bande-bas { bottom: 0; border-top: 1px solid rgba(0, 0, 0, 0.9); }
+
+/* ---------- pièces communes ---------- */
+.bouton {
+  font-family: var(--etroit); font-size: 14px; letter-spacing: 0.22em; font-weight: 500;
+  color: var(--ivoire); border: 1px solid var(--filet); padding: 13px 30px; transition: all 0.3s ease;
+}
+.bouton:hover { background: var(--ivoire); color: var(--noir); border-color: var(--ivoire); }
+
+.ecran { display: none; }
+.ecran.active { display: block; animation: fondu 0.7s ease both; }
+@keyframes fondu { from { opacity: 0; } }
+
+/* ============================================================
+   CARTONS D'OUVERTURE
+   ============================================================ */
+#ecran-ouverture { position: fixed; inset: 0; z-index: 60; background: var(--noir); }
+#ecran-ouverture.active { display: flex; align-items: center; justify-content: center; }
+#ecran-ouverture.sort { animation: fermeture 0.9s ease forwards; }
+@keyframes fermeture { to { opacity: 0; } }
+.cartons { text-align: center; padding: 0 24px; }
+.carton { opacity: 0; animation: apparaitre 1.1s ease forwards; }
+.c1 {
+  font-family: var(--etroit); font-size: 13px; letter-spacing: 0.5em; color: var(--ivoire-2);
+  animation-delay: 0.3s; text-indent: 0.5em;
+}
+.c2 {
+  font-family: var(--titre); font-weight: 400; font-size: clamp(32px, 7vw, 74px); letter-spacing: 0.03em;
+  margin: 22px 0; animation-delay: 1.1s;
+}
+.c3 {
+  font-family: var(--etroit); font-size: 13px; letter-spacing: 0.34em; color: var(--ivoire-3);
+  animation-delay: 1.9s; text-indent: 0.34em;
+}
+.c4 { margin-top: 46px; animation-delay: 2.6s; }
+@keyframes apparaitre { to { opacity: 1; } }
+
+/* ============================================================
+   TÊTE
+   ============================================================ */
+.tete {
+  position: fixed; top: var(--bande); left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; gap: 30px; padding: 14px 30px;
+  background: linear-gradient(180deg, rgba(11, 11, 12, 0.97), rgba(11, 11, 12, 0.7));
+  border-bottom: 1px solid var(--filet);
+}
+.tete-nom { font-family: var(--titre); font-size: 15px; letter-spacing: 0.14em; }
+.onglets { display: flex; gap: 24px; margin-left: auto; }
+.onglet {
+  font-family: var(--etroit); font-size: 13px; letter-spacing: 0.2em; color: var(--ivoire-3);
+  padding: 5px 0; border-bottom: 1px solid transparent; transition: all 0.3s ease;
+}
+.onglet:hover { color: var(--ivoire); }
+.onglet.actif { color: var(--ivoire); border-bottom-color: var(--rouge); }
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+.page { max-width: 1240px; margin: 0 auto; padding: calc(var(--bande) + 96px) 30px calc(var(--bande) + 60px); }
+.page-etroite { max-width: 760px; }
+.page-titre {
+  font-family: var(--titre); font-weight: 400; font-size: clamp(24px, 4vw, 40px);
+  letter-spacing: 0.14em; text-align: center;
+}
+.page-note {
+  font-family: var(--etroit); font-size: 13px; letter-spacing: 0.2em; color: var(--ivoire-3);
+  text-align: center; margin-top: 14px;
+}
+.sous-titre {
+  font-family: var(--etroit); font-size: 12px; letter-spacing: 0.3em; color: var(--rouge);
+  margin: 48px 0 20px; font-weight: 500;
+}
+
+/* ============================================================
+   AFFICHES
+   ============================================================ */
+.affiches {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 26px; margin-top: 52px;
+}
+.affiche-case { display: block; transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.affiche-case:hover { transform: translateY(-8px); }
+.affiche {
+  position: relative; aspect-ratio: 2 / 3; overflow: hidden; display: block;
+  font-family: var(--titre); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+}
+.affiche-case:hover .affiche { box-shadow: 0 22px 46px rgba(0, 0, 0, 0.7); }
+.af-bord { position: absolute; inset: 9px; border: 1px solid currentColor; opacity: 0.28; pointer-events: none; }
+.af-haut { position: absolute; left: 0; right: 0; top: 20px; text-align: center; z-index: 2; }
+.af-genre { font-family: var(--etroit); font-size: 9px; letter-spacing: 0.28em; }
+.af-titre { position: absolute; left: 18px; right: 18px; text-align: center; z-index: 2; }
+.af-nom {
+  display: block; font-size: clamp(19px, 2.4vw, 27px); line-height: 1.06; letter-spacing: 0.02em; font-weight: 500;
+}
+.af-sous {
+  display: block; font-family: var(--corps); font-size: 10.5px; font-style: italic;
+  opacity: 0.72; margin-top: 8px; line-height: 1.4;
+}
+.af-pied {
+  position: absolute; left: 0; right: 0; bottom: 20px; text-align: center;
+  font-family: var(--etroit); font-size: 9px; letter-spacing: 0.2em; opacity: 0.7; z-index: 2;
+}
+.af-point { margin: 0 6px; }
+
+/* ============================================================
+   FICHE TECHNIQUE
+   ============================================================ */
+.fiche-voile {
+  position: fixed; inset: 0; z-index: 80; background: rgba(6, 6, 7, 0.93);
+  overflow-y: auto; padding: calc(var(--bande) + 30px) 22px calc(var(--bande) + 30px);
+}
+.fiche-voile.in { animation: fondu 0.4s ease both; }
+.fiche {
+  position: relative; max-width: 1000px; margin: 0 auto; background: var(--noir-2);
+  border: 1px solid var(--filet); padding: 40px;
+}
+.fiche-fermer {
+  position: absolute; right: 18px; top: 14px; font-size: 15px; color: var(--ivoire-3); transition: color 0.3s ease;
+}
+.fiche-fermer:hover { color: var(--rouge); }
+.fiche-grille { display: grid; grid-template-columns: 280px 1fr; gap: 44px; align-items: start; }
+.fiche-affiche { position: sticky; top: 0; }
+.fiche-genre { font-family: var(--etroit); font-size: 11px; letter-spacing: 0.28em; }
+.fiche-titre {
+  font-family: var(--titre); font-weight: 400; font-size: clamp(28px, 4.4vw, 46px);
+  letter-spacing: 0.02em; margin: 10px 0 6px;
+}
+.fiche-sous { font-size: 17px; font-style: italic; color: var(--ivoire-2); }
+.fiche-meta { display: flex; gap: 34px; margin: 24px 0; }
+.fiche-meta span { display: flex; flex-direction: column; gap: 3px; font-size: 16px; }
+.fiche-meta i {
+  font-family: var(--etroit); font-style: normal; font-size: 10px; letter-spacing: 0.22em; color: var(--ivoire-3);
+}
+.fiche-synopsis {
+  font-size: 17.5px; line-height: 1.72; color: var(--ivoire); border-left: 2px solid var(--rouge);
+  padding-left: 20px; margin-bottom: 12px;
+}
+.fiche-lab {
+  font-family: var(--etroit); font-size: 11px; letter-spacing: 0.3em; color: var(--rouge);
+  margin: 34px 0 14px; font-weight: 500;
+}
+.fiche-liste { display: flex; flex-direction: column; gap: 7px; }
+.fiche-ligne { display: flex; align-items: baseline; gap: 10px; font-size: 15.5px; }
+.fl-g { color: var(--ivoire); white-space: nowrap; }
+.fl-p { flex: 1 1 auto; border-bottom: 1px dotted rgba(232, 226, 214, 0.24); transform: translateY(-4px); }
+.fl-d { font-family: var(--etroit); font-size: 13px; letter-spacing: 0.12em; color: var(--ivoire-3); white-space: nowrap; }
+.fiche-liens { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 34px; }
+
+/* ============================================================
+   RÉALISATEUR · PARCOURS
+   ============================================================ */
+.real-note {
+  font-family: var(--titre); font-size: 22px; font-style: italic; line-height: 1.6;
+  text-align: center; margin: 40px auto 46px; max-width: 620px;
+}
+.real-ident { display: flex; flex-direction: column; gap: 9px; }
+.competences { display: flex; flex-direction: column; gap: 11px; }
+.comp { display: grid; grid-template-columns: 160px 1fr 32px; gap: 16px; align-items: center; }
+.comp-nom { font-family: var(--etroit); font-size: 12px; letter-spacing: 0.16em; color: var(--ivoire-2); }
+.comp-barre { height: 3px; background: rgba(232, 226, 214, 0.12); }
+.comp-barre i { display: block; height: 100%; background: var(--ivoire); }
+.comp-val { font-family: var(--etroit); font-size: 13px; color: var(--ivoire-3); text-align: right; }
+
+.parcours { display: flex; flex-direction: column; margin-top: 46px; }
+.etape {
+  display: grid; grid-template-columns: 84px 1fr; gap: 24px; padding: 22px 0;
+  border-top: 1px solid var(--filet); transition: background 0.3s ease;
+}
+.etape:last-child { border-bottom: 1px solid var(--filet); }
+.etape:hover { background: rgba(232, 226, 214, 0.03); }
+.etape-an { font-family: var(--titre); font-size: 19px; color: var(--rouge); }
+.etape-corps { display: flex; flex-direction: column; gap: 5px; }
+.etape-titre { font-family: var(--titre); font-size: 18px; }
+.etape-texte { font-size: 15.5px; color: var(--ivoire-2); }
+
+/* ============================================================
+   GÉNÉRIQUE DE FIN
+   ============================================================ */
+#ecran-generique.active { display: flex; }
+.generique-cadre {
+  height: 100dvh; width: 100%; overflow: hidden; position: relative;
+  mask-image: linear-gradient(180deg, transparent 8%, #000 26%, #000 74%, transparent 94%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 8%, #000 26%, #000 74%, transparent 94%);
+}
+.generique-roule {
+  position: absolute; left: 0; right: 0; top: 100%; text-align: center; padding: 0 24px 120px;
+  animation: rouler 46s linear infinite;
+}
+@keyframes rouler { to { transform: translateY(-190%); } }
+.generique-cadre:hover .generique-roule { animation-play-state: paused; }
+.gen-fin {
+  font-family: var(--titre); font-size: clamp(40px, 8vw, 82px); letter-spacing: 0.2em;
+  margin-bottom: 90px; text-indent: 0.2em;
+}
+.gen-bloc { margin-bottom: 46px; }
+.gen-role { font-family: var(--etroit); font-size: 12px; letter-spacing: 0.3em; color: var(--ivoire-3); }
+.gen-nom { font-family: var(--titre); font-size: 22px; margin-top: 8px; }
+.gen-nom a { border-bottom: 1px solid var(--filet); }
+.gen-nom a:hover { color: var(--rouge); border-color: var(--rouge); }
+.gen-filet { width: 60px; height: 1px; background: var(--filet); margin: 60px auto; }
+.gen-copy { font-family: var(--etroit); font-size: 11px; letter-spacing: 0.2em; color: var(--ivoire-3); margin-top: 70px; }
+
+/* ============================================================
+   ADAPTATIF
+   ============================================================ */
+@media (max-width: 900px) {
+  .fiche-grille { grid-template-columns: 1fr; gap: 30px; }
+  .fiche-affiche { position: static; max-width: 240px; margin: 0 auto; }
+  .fiche { padding: 26px 20px; }
+}
+@media (max-width: 680px) {
+  :root { --bande: 30px; }
+  .tete { padding: 10px 16px; gap: 12px; flex-wrap: wrap; }
+  .tete-nom { display: none; }
+  .onglets { margin-left: 0; width: 100%; gap: 16px; overflow-x: auto; padding-bottom: 2px; }
+  .onglet { font-size: 12px; letter-spacing: 0.14em; white-space: nowrap; }
+  .page { padding: calc(var(--bande) + 96px) 18px calc(var(--bande) + 40px); }
+  .affiches { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .comp { grid-template-columns: 110px 1fr 28px; gap: 10px; }
+  .etape { grid-template-columns: 58px 1fr; gap: 14px; }
+  .fiche-ligne { flex-wrap: wrap; }
+  .fl-p { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  .carton { opacity: 1; }
+  .generique-roule { animation: none; position: static; }
+  .generique-cadre { height: auto; overflow: visible; mask-image: none; -webkit-mask-image: none; }
+}

@@ -2,136 +2,152 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#08070a">
-<title>AYOUB OUAADOUD — Site de Grâce</title>
-<meta name="description" content="Portfolio interactif : un site de grâce, un inventaire, et dix objets à examiner.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0c">
+<title>AYOUB OUAADOUD — Quatre portfolios</title>
+<meta name="description" content="Le même portfolio, dans quatre directions artistiques. À comparer, puis à choisir.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/portfolio.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a227' stroke-width='6'/><circle cx='50' cy='50' r='10' fill='%23f0dfa8'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Marcellus&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Anton&family=Archivo:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --fond: #0a0a0c; --texte: #e6e3dc; --sourd: rgba(230,227,220,.5); --tres-sourd: rgba(230,227,220,.26); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--fond); color: var(--texte); font-family: "Archivo", system-ui, sans-serif;
+    font-size: 16px; line-height: 1.65; min-height: 100dvh;
+  }
+  .enveloppe { max-width: 1280px; margin: 0 auto; padding: 74px 26px 90px; }
+
+  header { text-align: center; margin-bottom: 66px; }
+  .sur { font-size: 11px; letter-spacing: .42em; color: var(--tres-sourd); text-indent: .42em; }
+  h1 { font-family: "Bodoni Moda", Georgia, serif; font-weight: 400; font-size: clamp(28px, 5vw, 50px); letter-spacing: .06em; margin: 16px 0 18px; }
+  .intro { max-width: 640px; margin: 0 auto; color: var(--sourd); font-size: 16.5px; }
+  .intro b { color: var(--texte); font-weight: 500; }
+
+  .portes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+  .porte {
+    display: block; border: 1px solid var(--tres-sourd); overflow: hidden;
+    transition: transform .4s cubic-bezier(.2,.8,.3,1), border-color .4s ease;
+    text-decoration: none; color: inherit;
+  }
+  .porte:hover { transform: translateY(-6px); }
+  .apercu { height: 200px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .apercu span { position: relative; z-index: 2; text-align: center; padding: 0 18px; }
+  .corps { padding: 22px 22px 26px; }
+  .nom { font-size: 12px; letter-spacing: .26em; color: var(--sourd); }
+  .desc { margin-top: 12px; font-size: 15px; color: var(--sourd); line-height: 1.6; }
+  .aller { margin-top: 18px; font-size: 11px; letter-spacing: .24em; color: var(--texte); }
+  .porte:hover .aller { color: #fff; }
+
+  /* --- aperçu 1 : site de grâce --- */
+  .ap-grace { background: radial-gradient(ellipse 70% 60% at 50% 118%, rgba(201,162,39,.42), #08070a 66%); }
+  .ap-grace span { font-family: "Cinzel", serif; font-size: 21px; letter-spacing: .3em; color: #f0dfa8; text-indent: .3em; text-shadow: 0 0 30px rgba(201,162,39,.7); }
+  .porte:hover .ap-grace { filter: brightness(1.25); }
+
+  /* --- aperçu 2 : la faille --- */
+  .ap-faille { background: linear-gradient(180deg, #0a1428, #010a13); }
+  .ap-faille::before {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(60deg, rgba(200,170,110,.10) 0 1px, transparent 1px 34px),
+                repeating-linear-gradient(-60deg, rgba(200,170,110,.10) 0 1px, transparent 1px 34px);
+  }
+  .ap-faille::after {
+    content: ""; position: absolute; left: 50%; top: 50%; width: 106px; height: 122px; transform: translate(-50%,-50%);
+    background: linear-gradient(180deg, rgba(3,151,171,.5), rgba(200,170,110,.28));
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  }
+  .ap-faille span { font-family: "Marcellus", serif; font-size: 19px; letter-spacing: .16em; color: #f0e6d2; }
+
+  /* --- aperçu 3 : la séance --- */
+  .ap-cinema { background: #0b0b0c; }
+  .ap-cinema::before, .ap-cinema::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 26px; background: #060607;
+  }
+  .ap-cinema::before { top: 0; } .ap-cinema::after { bottom: 0; }
+  .ap-cinema span { font-family: "Bodoni Moda", Georgia, serif; font-size: 24px; letter-spacing: .05em; color: #e8e2d6; }
+  .ap-cinema i {
+    position: absolute; left: 50%; top: 50%; width: 118px; height: 118px; transform: translate(-50%,-50%);
+    border-radius: 50%; background: #c1272d; z-index: 1;
+  }
+
+  /* --- aperçu 4 : épisodes --- */
+  .ap-anime { background: #f4f1ea; }
+  .ap-anime::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(#16161d 8%, transparent 9%); background-size: 14px 14px; opacity: .3;
+  }
+  .ap-anime::after {
+    content: ""; position: absolute; inset: -30%;
+    background: repeating-conic-gradient(from 0deg at 62% 40%, #e2382c 0deg 1.4deg, transparent 1.4deg 8deg); opacity: .5;
+  }
+  .ap-anime span { font-family: "Anton", sans-serif; font-size: 30px; letter-spacing: .02em; color: #16161d; text-shadow: 4px 4px 0 #f4d13d; }
+
+  footer { margin-top: 70px; text-align: center; color: var(--tres-sourd); font-size: 14px; }
+  footer a { color: var(--sourd); border-bottom: 1px solid var(--tres-sourd); text-decoration: none; }
+  footer a:hover { color: var(--texte); }
+
+  @media (max-width: 620px) { .enveloppe { padding: 50px 18px 70px; } .apercu { height: 160px; } }
+</style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='50' height='50' fill='%23c9a227'/><rect x='50' width='50' height='50' fill='%230397ab'/><rect y='50' width='50' height='50' fill='%23c1272d'/><rect x='50' y='50' width='50' height='50' fill='%23f4d13d'/></svg>">
 </head>
 <body>
+<div class="enveloppe">
 
-<canvas id="braises" aria-hidden="true"></canvas>
-<div class="grain" aria-hidden="true"></div>
-<div class="vignette" aria-hidden="true"></div>
-
-<!-- ================= OUVERTURE ================= -->
-<section id="ecran-ouverture" class="ecran active">
-  <div class="ouverture-bloc">
-    <p class="ouverture-sur">PORTFOLIO</p>
-    <h1 class="ouverture-titre">AYOUB<span class="ouverture-sep">·</span>OUAADOUD</h1>
-    <p class="ouverture-sous">DÉVELOPPEUR — BRUXELLES</p>
-    <div class="filet"><span class="filet-losange"></span></div>
-    <button id="entrer" class="entrer">APPUYEZ SUR ENTRÉE</button>
-    <p class="ouverture-note">le son est éteint — vous pourrez l'allumer en haut à droite</p>
-  </div>
-</section>
-
-<!-- ================= LE JEU ================= -->
-<main id="jeu" hidden>
-
-  <header class="bandeau">
-    <button class="bandeau-retour" id="btn-retour" hidden>◄ RETOUR</button>
-    <span class="bandeau-porteur" id="bandeau-porteur">AYOUB OUAADOUD</span>
-    <span class="bandeau-lieu">NIVEAU <b id="bandeau-niveau">26</b></span>
-    <nav class="bandeau-actions">
-      <button class="lien-sobre" id="btn-souvenirs">SOUVENIRS <b id="cpt-souvenirs">0</b>/<b id="cpt-total">8</b></button>
-      <button class="lien-sobre" id="btn-son" aria-pressed="false">SON : ÉTEINT</button>
-    </nav>
+  <header>
+    <p class="sur">AYOUB OUAADOUD — PORTFOLIO</p>
+    <h1>Quatre mondes, un seul contenu</h1>
+    <p class="intro">
+      Le même travail — <b>dix projets réels</b>, les mêmes faits, les mêmes liens — présenté dans
+      quatre directions artistiques. Ouvrez-les, comparez, puis gardez celle qui vous ressemble :
+      les trois autres se suppriment d'un seul dossier.
+    </p>
   </header>
 
-  <!-- ---- site de grâce ---- -->
-  <section id="ecran-grace" class="ecran active">
-    <canvas id="lueur" aria-hidden="true"></canvas>
-    <div class="grace-bloc">
-      <p class="grace-sur">SITE DE GRÂCE DÉCOUVERT</p>
-      <h2 class="grace-titre">L'ATELIER</h2>
-      <nav class="menu" id="menu">
-        <button class="menu-item" data-ecran="ecran-inventaire"><span class="menu-marque"></span>INVENTAIRE<span class="menu-note">dix objets</span></button>
-        <button class="menu-item" data-ecran="ecran-attributs"><span class="menu-marque"></span>ATTRIBUTS<span class="menu-note">ce que je sais faire</span></button>
-        <button class="menu-item" data-ecran="ecran-chronique"><span class="menu-marque"></span>CHRONIQUE<span class="menu-note">ce qui a précédé</span></button>
-        <button class="menu-item" data-ecran="ecran-missives"><span class="menu-marque"></span>MISSIVES<span class="menu-note">me joindre</span></button>
-        <button class="menu-item menu-repos" data-action="repos"><span class="menu-marque"></span>SE REPOSER<span class="menu-note">reprendre souffle</span></button>
-      </nav>
-    </div>
-  </section>
+  <div class="portes">
 
-  <!-- ---- inventaire ---- -->
-  <section id="ecran-inventaire" class="ecran">
-    <div class="ecran-tete">
-      <h2 class="ecran-titre">INVENTAIRE</h2>
-      <div class="filet"><span class="filet-losange"></span></div>
-    </div>
-    <div class="inv">
-      <div class="inv-casiers" id="inv-casiers" role="listbox" aria-label="Objets"></div>
-      <article class="fiche" id="fiche"></article>
-    </div>
-  </section>
-
-  <!-- ---- attributs ---- -->
-  <section id="ecran-attributs" class="ecran">
-    <div class="ecran-tete">
-      <h2 class="ecran-titre">ATTRIBUTS</h2>
-      <div class="filet"><span class="filet-losange"></span></div>
-    </div>
-    <div class="attr-corps">
-      <div class="attr-porteur">
-        <button class="attr-niveau" id="attr-niveau">
-          <span class="attr-niveau-lab">NIVEAU</span>
-          <span class="attr-niveau-val">26</span>
-          <span class="attr-niveau-note">un par dépôt public ou privé</span>
-        </button>
+    <a class="porte" href="grace/">
+      <div class="apercu ap-grace"><span>L'ATELIER</span></div>
+      <div class="corps">
+        <p class="nom">SITE DE GRÂCE</p>
+        <p class="desc">Dark fantasy. Une lueur qui brûle dans le noir, un inventaire de dix objets, et une description pour chacun. Le plus atmosphérique.</p>
+        <p class="aller">ENTRER →</p>
       </div>
-      <div class="attr-liste" id="attr-liste"></div>
-      <div class="attr-memoire" id="attr-memoire"></div>
-    </div>
-  </section>
+    </a>
 
-  <!-- ---- chronique ---- -->
-  <section id="ecran-chronique" class="ecran">
-    <div class="ecran-tete">
-      <h2 class="ecran-titre">CHRONIQUE</h2>
-      <div class="filet"><span class="filet-losange"></span></div>
-    </div>
-    <ol class="chronique" id="chronique"></ol>
-  </section>
+    <a class="porte" href="faille/">
+      <div class="apercu ap-faille"><span>SÉLECTION</span></div>
+      <div class="corps">
+        <p class="nom">LA FAILLE</p>
+        <p class="desc">Hextech. Chaque projet est un champion : un titre, des rôles, cinq sorts et des statistiques. Le plus ludique.</p>
+        <p class="aller">ENTRER →</p>
+      </div>
+    </a>
 
-  <!-- ---- missives ---- -->
-  <section id="ecran-missives" class="ecran">
-    <div class="ecran-tete">
-      <h2 class="ecran-titre">MISSIVES</h2>
-      <div class="filet"><span class="filet-losange"></span></div>
-      <p class="ecran-note">Messages laissés au sol par le porteur.</p>
-    </div>
-    <div class="missives" id="missives"></div>
-  </section>
-</main>
+    <a class="porte" href="cinema/">
+      <div class="apercu ap-cinema"><i></i><span>FILMOGRAPHIE</span></div>
+      <div class="corps">
+        <p class="nom">LA SÉANCE</p>
+        <p class="desc">Filmographie. Dix affiches composées au code, une fiche technique par film, et un générique de fin qui défile. Le plus sobre.</p>
+        <p class="aller">ENTRER →</p>
+      </div>
+    </a>
 
-<!-- ================= SURIMPRESSIONS ================= -->
-<div id="carton" class="carton" hidden><span class="carton-nom"></span></div>
-<div id="peri" class="peri" hidden><span>VOUS AVEZ PÉRI</span></div>
+    <a class="porte" href="anime/">
+      <div class="apercu ap-anime"><span>ÉPISODES</span></div>
+      <div class="corps">
+        <p class="nom">SÉRIE EN DIX ÉPISODES</p>
+        <p class="desc">Papier clair, aplats francs, trames de points. Chaque projet est un épisode avec son image-clé. Le plus lisible et le seul en clair.</p>
+        <p class="aller">ENTRER →</p>
+      </div>
+    </a>
 
-<div id="voile-souvenirs" class="voile" hidden>
-  <div class="panneau">
-    <div class="panneau-tete">
-      <h3>SOUVENIRS</h3>
-      <button class="panneau-fermer" data-fermer="voile-souvenirs">✕</button>
-    </div>
-    <div class="panneau-corps" id="liste-souvenirs"></div>
   </div>
+
+  <footer>
+    <p>Aucune image n'est chargée dans les quatre versions : emblèmes, affiches, vignettes et lueurs sont composés au code.</p>
+    <p style="margin-top:10px"><a href="https://github.com/AyoubO22">github.com/AyoubO22</a></p>
+  </footer>
+
 </div>
-
-<div id="annonce" class="annonce" hidden></div>
-
-<script src="js/data.js"></script>
-<script src="js/audio.js"></script>
-<script src="js/ambiance.js"></script>
-<script src="js/sigils.js"></script>
-<script src="js/eggs.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/main.js"></script>
 </body>
 </html>

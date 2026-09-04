@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#010a13">
+<title>AYOUB OUAADOUD — Sélection</title>
+<meta name="description" content="Portfolio interactif : dix projets présentés comme une sélection de champions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 6 92 30v40L50 94 8 70V30z' fill='none' stroke='%23c8aa6e' stroke-width='7'/><path d='M50 32 68 42v20L50 72 32 62V42z' fill='%230397ab'/></svg>">
+</head>
+<body>
+
+<div class="trame" aria-hidden="true"></div>
+<div class="lueur-fond" aria-hidden="true"></div>
+
+<!-- ================= OUVERTURE ================= -->
+<section id="ecran-ouverture" class="ecran active">
+  <div class="ouv">
+    <div class="ouv-hex"></div>
+    <p class="ouv-sur">PORTFOLIO — SÉLECTION DES CHAMPIONS</p>
+    <h1 class="ouv-titre">AYOUB OUAADOUD</h1>
+    <p class="ouv-sous">DÉVELOPPEUR — BRUXELLES</p>
+    <button id="entrer" class="bouton-or">ENTRER DANS LA SÉLECTION</button>
+  </div>
+</section>
+
+<!-- ================= APPLICATION ================= -->
+<main id="app" hidden>
+
+  <header class="tete">
+    <div class="tete-invocateur">
+      <span class="tete-niveau" id="tete-niveau">26</span>
+      <span class="tete-nom" id="tete-nom">AYOUB OUAADOUD</span>
+      <span class="tete-rang" id="tete-rang">PLATINE</span>
+    </div>
+    <nav class="onglets" id="onglets">
+      <button class="onglet actif" data-ecran="ecran-selection">SÉLECTION</button>
+      <button class="onglet" data-ecran="ecran-profil">PROFIL</button>
+      <button class="onglet" data-ecran="ecran-historique">HISTORIQUE</button>
+      <button class="onglet" data-ecran="ecran-contact">CONTACT</button>
+    </nav>
+    <button class="son" id="btn-son" aria-pressed="false">SON</button>
+  </header>
+
+  <!-- ---- sélection ---- -->
+  <section id="ecran-selection" class="ecran active">
+    <div class="selection">
+
+      <aside class="grille" id="grille" role="listbox" aria-label="Champions"></aside>
+
+      <div class="scene">
+        <div class="scene-halo" aria-hidden="true"></div>
+        <div class="scene-embleme" id="scene-embleme"></div>
+        <div class="scene-ident">
+          <p class="scene-titre" id="scene-titre">le Chroniqueur</p>
+          <h2 class="scene-nom" id="scene-nom">GAMEBOXD</h2>
+          <div class="scene-roles" id="scene-roles"></div>
+        </div>
+      </div>
+
+      <div class="kit">
+        <p class="kit-resume" id="kit-resume"></p>
+        <div class="kit-stats" id="kit-stats"></div>
+        <div class="kit-sorts" id="kit-sorts"></div>
+        <div class="kit-detail" id="kit-detail"></div>
+        <div class="kit-pied">
+          <div class="kit-liens" id="kit-liens"></div>
+          <button class="bouton-or verrou" id="verrou">VERROUILLER</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ---- profil ---- -->
+  <section id="ecran-profil" class="ecran">
+    <div class="page">
+      <h2 class="page-titre">PROFIL D'INVOCATEUR</h2>
+      <div class="profil">
+        <div class="profil-carte">
+          <div class="profil-hex"><span id="profil-niveau">26</span></div>
+          <p class="profil-nom" id="profil-nom">AYOUB OUAADOUD</p>
+          <p class="profil-lieu" id="profil-lieu">Bruxelles, Belgique</p>
+          <p class="profil-note">Un niveau par dépôt, public ou privé.</p>
+        </div>
+        <div class="maitrises" id="maitrises"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- historique ---- -->
+  <section id="ecran-historique" class="ecran">
+    <div class="page">
+      <h2 class="page-titre">HISTORIQUE DE PARTIES</h2>
+      <div class="parties" id="parties"></div>
+    </div>
+  </section>
+
+  <!-- ---- contact ---- -->
+  <section id="ecran-contact" class="ecran">
+    <div class="page">
+      <h2 class="page-titre">INVITER DANS L'ÉQUIPE</h2>
+      <div class="contacts" id="contacts"></div>
+    </div>
+  </section>
+</main>
+
+<div id="verrouille" class="verrouille" hidden><span class="verrouille-nom"></span><span class="verrouille-sur">VERROUILLÉ</span></div>
+<div id="annonce" class="annonce" hidden></div>
+
+<script src="js/data.js"></script>
+<script src="js/emblemes.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

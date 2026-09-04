@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0c">
+<title>AYOUB OUAADOUD — La Séance</title>
+<meta name="description" content="Portfolio interactif : dix travaux présentés comme une filmographie.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Archivo:wght@300;400;500;600&family=Archivo+Narrow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/portfolio.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230b0b0c'/><circle cx='50' cy='50' r='26' fill='none' stroke='%23e8e2d6' stroke-width='6'/><rect y='0' width='100' height='14' fill='%23c1272d'/><rect y='86' width='100' height='14' fill='%23c1272d'/></svg>">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="scintillement" aria-hidden="true"></div>
+<div class="bande bande-haut" aria-hidden="true"></div>
+<div class="bande bande-bas" aria-hidden="true"></div>
+
+<!-- ================= CARTONS D'OUVERTURE ================= -->
+<section id="ecran-ouverture" class="ecran active">
+  <div class="cartons">
+    <p class="carton c1">UNE SÉLECTION DE</p>
+    <h1 class="carton c2">AYOUB OUAADOUD</h1>
+    <p class="carton c3">DIX TRAVAUX · 2024 — 2026</p>
+    <button id="entrer" class="carton c4 bouton">ENTRER EN SALLE</button>
+  </div>
+</section>
+
+<!-- ================= SALLE ================= -->
+<main id="app" hidden>
+
+  <header class="tete">
+    <span class="tete-nom">AYOUB OUAADOUD</span>
+    <nav class="onglets" id="onglets">
+      <button class="onglet actif" data-ecran="ecran-filmo">FILMOGRAPHIE</button>
+      <button class="onglet" data-ecran="ecran-realisateur">LE RÉALISATEUR</button>
+      <button class="onglet" data-ecran="ecran-parcours">PARCOURS</button>
+      <button class="onglet" data-ecran="ecran-generique">GÉNÉRIQUE</button>
+    </nav>
+  </header>
+
+  <!-- ---- filmographie ---- -->
+  <section id="ecran-filmo" class="ecran active">
+    <div class="page">
+      <h2 class="page-titre">FILMOGRAPHIE</h2>
+      <p class="page-note">Dix travaux. Cliquez sur une affiche pour la fiche technique.</p>
+      <div class="affiches" id="affiches"></div>
+    </div>
+  </section>
+
+  <!-- ---- réalisateur ---- -->
+  <section id="ecran-realisateur" class="ecran">
+    <div class="page page-etroite">
+      <h2 class="page-titre">LE RÉALISATEUR</h2>
+      <p class="real-note" id="real-note"></p>
+      <div class="real-ident" id="real-ident"></div>
+      <h3 class="sous-titre">COMPÉTENCES TECHNIQUES</h3>
+      <div class="competences" id="competences"></div>
+    </div>
+  </section>
+
+  <!-- ---- parcours ---- -->
+  <section id="ecran-parcours" class="ecran">
+    <div class="page page-etroite">
+      <h2 class="page-titre">PARCOURS</h2>
+      <div class="parcours" id="parcours"></div>
+    </div>
+  </section>
+
+  <!-- ---- générique ---- -->
+  <section id="ecran-generique" class="ecran">
+    <div class="generique-cadre">
+      <div class="generique-roule" id="generique-roule"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= FICHE TECHNIQUE ================= -->
+<div id="fiche" class="fiche-voile" hidden>
+  <article class="fiche" id="fiche-corps"></article>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/affiches.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
