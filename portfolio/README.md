@@ -1,10 +1,13 @@
-# 🛂 Bureau des Entrées — portfolio interactif
+# ✦ Site de Grâce — portfolio interactif
 
-Un portfolio jouable : vous êtes l'inspecteur d'un poste-frontière, et **chaque projet est un candidat qui présente ses papiers**. Vous lisez ses documents, vous les déplacez sur le bureau, vous tamponnez APPROUVÉ ou REFUSÉ.
+Un portfolio en forme de halte : une lueur qui brûle dans le noir, un menu gravé,
+et un **inventaire de dix objets** — chaque projet est une pièce que l'on examine,
+avec son sceau, sa description et ses effets.
 
 **▶ Ouvrir :** https://ayoubo22.github.io/undercover/portfolio/
 
-Esthétique inspirée des jeux de poste-frontière ; mise en scène inspirée des portfolios-scènes interactifs.
+Hommage à l'esthétique des jeux d'action-RPG en monde sombre — jamais une copie
+de leurs marques ni de leurs ressources : tout est dessiné ici.
 
 ---
 
@@ -12,75 +15,76 @@ Esthétique inspirée des jeux de poste-frontière ; mise en scène inspirée de
 
 | | |
 |---|---|
-| **Amorçage** | séquence de démarrage CRT, puis briefing du jour |
-| **Guichet** | les candidats arrivent, parlent, et posent leurs papiers |
-| **Bureau** | documents déplaçables, agrandissables, tamponnables |
-| **Règlement** | profil, compétences, parcours, contact |
-| **Terminal** | commandes (`aide`, `dossiers`, `ouvrir <id>`, `competences`…) — toutes ne sont pas documentées |
-| **Anomalies** | easter eggs cachés, avec registre de progression |
+| **Site de grâce** | la halte : lueur animée, menu, et la possibilité de simplement se reposer |
+| **Inventaire** | dix objets à examiner — sceau, rareté, description, effets, liens |
+| **Attributs** | ce que je sais faire, en jauges |
+| **Chronique** | ce qui a précédé, année par année |
+| **Missives** | messages laissés au sol : courriel, GitHub, LinkedIn |
+| **Souvenirs** | huit secrets cachés dans le lieu, avec leur registre |
 
-Aucune librairie, aucune image, aucun fichier son : les visages sont du pixel art
-dessiné au code, les bruitages sont synthétisés en WebAudio.
+Aucune librairie, aucune image, aucun fichier son : les sceaux sont du dessin
+vectoriel généré au code, les braises et la lueur sont peintes sur canvas, et les
+bruitages sont synthétisés en WebAudio.
+
+Navigation complète au clavier : flèches, Entrée, Échap.
 
 ---
 
 ## Modifier le contenu
 
-**Tout le contenu tient dans [`js/data.js`](js/data.js).** Le reste n'a pas besoin d'être touché.
+**Tout tient dans [`js/data.js`](js/data.js).** Le reste n'a pas besoin d'être touché.
 
 ### Ajouter un projet
 
-Ajoutez un objet dans le tableau `DOSSIERS` — il se présentera tout seul au guichet,
-avec son propre visage généré à partir de sa graine :
+Un objet de plus dans le tableau `INVENTAIRE` — il apparaît dans les casiers avec
+son propre sceau, tiré de sa graine :
 
 ```js
 {
-  id: "mon-projet",              // identifiant unique, sans espace
-  nom: "MON PROJET",
-  type: "APPLICATION WEB",
-  graine: 4242,                  // n'importe quel nombre → un visage différent
-  repliques: [
-    "Ce que le candidat dit en arrivant.",
-    "Une deuxième phrase.",
+  id: "mon-projet",
+  nom: "NOM DE L'OBJET",
+  type: "Application web · React",
+  graine: 4242,            // n'importe quel nombre → un sceau différent
+  rarete: 2,               // 1 à 3 — 3 pour une pièce maîtresse
+  poids: "12 écrans",      // ce que vous voulez : taille, durée, portée
+  annee: "2026",
+  description: "Une phrase qui dit ce que la chose est, sans énumérer.",
+  effets: [
+    "Un fait technique",
+    "Un autre",
   ],
-  docs: [
-    { kind: "passeport", titre: "MON PROJET", sous: "SOUS-TITRE", photo: true,
-      champs: [["TYPE", "Site web"], ["STACK", "React"]] },
-    { kind: "note", titre: "RAPPORT", texte: "Un paragraphe.",
-      points: ["un point", "un autre"] },
-    { kind: "permis", titre: "AUTORISATION D'ACCÈS", texte: "…",
-      liens: [{ label: "CODE SOURCE", url: "https://…" }] },
-  ],
-  oui: "réplique s'il est approuvé",
-  non: "réplique s'il est refusé",
+  liens: [{ label: "CODE SOURCE", url: "https://…" }],
 }
 ```
 
-### Ajouter un easter egg
+La `description` est le cœur du format : elle doit être évocatrice **et** vraie.
+Les `effets` portent les faits — c'est là que vont les chiffres et les noms de
+technologies.
 
-1. Une entrée dans `ANOMALIES` ([`js/eggs.js`](js/eggs.js)) : `id`, `nom`, `indice`, `secret`.
-2. Un appel à `EGGS.trouver("son-id")` là où il doit se déclencher — un clic,
-   une commande du terminal, une combinaison de touches.
+### Ajouter un souvenir (easter egg)
 
-Le compteur, le panneau et la sauvegarde suivent tout seuls.
+1. Une entrée dans `SOUVENIRS` ([`js/eggs.js`](js/eggs.js)) : `id`, `nom`, `indice`, `secret`.
+2. Un appel à `EGGS.trouver("son-id")` là où il doit se déclencher.
 
-### Ajouter une commande au terminal
+Le compteur, le registre et la sauvegarde suivent tout seuls.
 
-Une entrée dans `COMMANDES` ([`js/terminal.js`](js/terminal.js)) :
-`{ aide: "description" | null si cachée, run(args) { … } }`.
+### Changer les attributs, la chronique, les missives
+
+Les tableaux `ATTRIBUTS`, `MEMOIRE`, `CHRONIQUE` et `MISSIVES`, toujours dans
+`js/data.js`.
 
 ---
 
 ## Fichiers
 
 ```
-index.html          les écrans (amorçage, briefing, poste)
+index.html          les écrans
 css/portfolio.css   tout le style
-js/data.js          ← LE CONTENU : projets, règlement, identité
-js/portraits.js     bustes en pixel art (ombrage, clignement, respiration)
-js/desk.js          file d'attente, papiers, glisser-déposer, tampons
-js/terminal.js      terminal et ses commandes
-js/eggs.js          registre des anomalies
-js/audio.js         bruitages synthétisés (WebAudio)
-js/main.js          amorçage, HUD, règlement, panneaux
+js/data.js          ← LE CONTENU : objets, attributs, chronique, missives
+js/sigils.js        sceaux héraldiques générés depuis une graine
+js/ambiance.js      braises et lueur du site de grâce (canvas)
+js/audio.js         cloches et souffles synthétisés (WebAudio)
+js/eggs.js          registre des souvenirs
+js/ui.js            écrans, inventaire, fiches, clavier
+js/main.js          mise en marche et branchements
 ```

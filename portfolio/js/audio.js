@@ -1,14 +1,13 @@
 // ============================================================
-//  BUREAU — BRUITAGES
-//  Tout est synthétisé au moment où ça sonne : aucun fichier son.
+//  SITE DE GRÂCE — SONS
+//  Cloches basses et souffles, synthétisés à la volée.
+//  Aucun fichier audio n'est chargé.
 // ============================================================
 
 const SFX = (() => {
   "use strict";
 
-  let ctx = null;
-  let master = null;
-  let on = false;
+  let ctx = null, master = null, on = false, souffle = null;
 
   const init = () => {
     if (ctx) return;
@@ -16,11 +15,11 @@ const SFX = (() => {
     if (!AC) return;
     ctx = new AC();
     master = ctx.createGain();
-    master.gain.value = 0.25;
+    master.gain.value = 0.3;
     master.connect(ctx.destination);
   };
 
-  const ready = () => {
+  const pret = () => {
     if (!on) return false;
     init();
     if (!ctx) return false;
@@ -28,104 +27,94 @@ const SFX = (() => {
     return true;
   };
 
-  // --- bruit blanc réutilisable (pour le papier et le tampon) ---
-  let noiseBuf = null;
-  const noise = () => {
-    if (!noiseBuf) {
-      noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
-      const d = noiseBuf.getChannelData(0);
+  let bruitBuf = null;
+  const bruit = () => {
+    if (!bruitBuf) {
+      bruitBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+      const d = bruitBuf.getChannelData(0);
       for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     }
-    const src = ctx.createBufferSource();
-    src.buffer = noiseBuf;
-    return src;
+    const s = ctx.createBufferSource();
+    s.buffer = bruitBuf;
+    return s;
   };
 
-  const tone = ({ type = "square", freq = 220, dur = 0.12, vol = 0.3, glide = null }) => {
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
+  // une partielle de cloche
+  const partielle = (f, dur, vol, type = "sine", retard = 0) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
     o.type = type;
-    o.frequency.setValueAtTime(freq, ctx.currentTime);
-    if (glide) o.frequency.exponentialRampToValueAtTime(glide, ctx.currentTime + dur);
-    g.gain.setValueAtTime(vol, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+    o.frequency.value = f;
+    const t0 = ctx.currentTime + retard;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     o.connect(g).connect(master);
-    o.start();
-    o.stop(ctx.currentTime + dur + 0.02);
-  };
-
-  const burst = ({ dur = 0.09, vol = 0.3, freq = 1600, q = 1 }) => {
-    const src = noise();
-    const f = ctx.createBiquadFilter();
-    const g = ctx.createGain();
-    f.type = "bandpass";
-    f.frequency.value = freq;
-    f.Q.value = q;
-    g.gain.setValueAtTime(vol, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
-    src.connect(f).connect(g).connect(master);
-    src.start();
-    src.stop(ctx.currentTime + dur + 0.02);
+    o.start(t0);
+    o.stop(t0 + dur + 0.05);
   };
 
   return {
-    get enabled() { return on; },
+    get actif() { return on; },
 
-    toggle() {
+    basculer() {
       on = !on;
-      if (on) { init(); if (ctx && ctx.state === "suspended") ctx.resume(); }
+      if (on) { init(); if (ctx && ctx.state === "suspended") ctx.resume(); this.souffle(true); }
+      else if (souffle) { try { souffle.stop(); } catch {} souffle = null; }
       return on;
     },
 
-    // sonnette du guichet
-    buzz() {
-      if (!ready()) return;
-      tone({ type: "square", freq: 196, dur: 0.16, vol: 0.22 });
-      setTimeout(() => ready() && tone({ type: "square", freq: 147, dur: 0.22, vol: 0.18 }), 110);
+    // déplacement dans un menu : un souffle très court
+    deplacer() {
+      if (!pret()) return;
+      const s = bruit(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      f.type = "bandpass"; f.frequency.value = 2400; f.Q.value = 1.6;
+      g.gain.setValueAtTime(0.10, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.07);
+      s.connect(f).connect(g).connect(master);
+      s.start(); s.stop(ctx.currentTime + 0.1);
     },
 
-    // papier qui glisse sur le bureau
-    paper() {
-      if (!ready()) return;
-      burst({ dur: 0.16, vol: 0.16, freq: 2600, q: 0.6 });
+    // sélection : une cloche grave à longue traîne
+    choisir() {
+      if (!pret()) return;
+      partielle(196, 1.6, 0.16);
+      partielle(294, 1.2, 0.07, "sine", 0.01);
+      partielle(392, 0.9, 0.04, "triangle", 0.02);
     },
 
-    // coup de tampon : claquement + résonance basse
-    stamp(ok) {
-      if (!ready()) return;
-      burst({ dur: 0.06, vol: 0.5, freq: 900, q: 0.4 });
-      tone({ type: "sine", freq: 90, dur: 0.18, vol: 0.4, glide: 45 });
-      setTimeout(() => {
-        if (!ready()) return;
-        if (ok) { tone({ type: "square", freq: 660, dur: 0.07, vol: 0.12 }); }
-        else { tone({ type: "sawtooth", freq: 150, dur: 0.16, vol: 0.12, glide: 90 }); }
-      }, 90);
+    // retour en arrière : plus sourd, plus court
+    revenir() {
+      if (!pret()) return;
+      partielle(147, 0.7, 0.12);
+      partielle(110, 0.9, 0.07);
     },
 
-    // frappe clavier / défilement de texte
-    key() {
-      if (!ready()) return;
-      burst({ dur: 0.02, vol: 0.09, freq: 2200 + Math.random() * 900, q: 2 });
+    // découverte : accord ascendant
+    decouverte() {
+      if (!pret()) return;
+      [262, 330, 392, 523].forEach((f, i) => partielle(f, 1.4 - i * 0.15, 0.10, "sine", i * 0.13));
     },
 
-    // interface
-    click() {
-      if (!ready()) return;
-      tone({ type: "square", freq: 520, dur: 0.04, vol: 0.1 });
+    // se reposer au site de grâce
+    grace() {
+      if (!pret()) return;
+      partielle(131, 3.2, 0.14);
+      partielle(196, 2.8, 0.09, "sine", 0.05);
+      partielle(262, 2.4, 0.06, "sine", 0.1);
+      partielle(330, 2.0, 0.03, "triangle", 0.15);
     },
 
-    // anomalie découverte
-    secret() {
-      if (!ready()) return;
-      [523, 659, 784, 1047].forEach((f, i) =>
-        setTimeout(() => ready() && tone({ type: "triangle", freq: f, dur: 0.14, vol: 0.16 }), i * 80)
-      );
-    },
-
-    // amorçage machine
-    boot() {
-      if (!ready()) return;
-      tone({ type: "sine", freq: 110, dur: 0.5, vol: 0.2, glide: 440 });
+    // nappe de fond très basse
+    souffle(demarrer) {
+      if (!pret() || !demarrer || souffle) return;
+      const s = bruit(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+      s.loop = true;
+      f.type = "lowpass"; f.frequency.value = 190; f.Q.value = 0.6;
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 3);
+      s.connect(f).connect(g).connect(master);
+      s.start();
+      souffle = s;
     },
   };
 })();

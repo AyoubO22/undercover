@@ -1,110 +1,114 @@
 // ============================================================
-//  BUREAU — REGISTRE DES ANOMALIES (easter eggs)
+//  SITE DE GRÂCE — SOUVENIRS (easter eggs)
 // ------------------------------------------------------------
-//  👉 POUR AJOUTER UN EASTER EGG :
-//     1. ajoute une entrée dans ANOMALIES ci-dessous
-//     2. appelle EGGS.trouver("son-id") où tu veux dans le code
-//        (un clic, une commande du terminal, une combinaison…)
-//     Le reste — compteur, panneau, sauvegarde — est automatique.
+//  👉 POUR EN AJOUTER UN :
+//     1. une entrée dans SOUVENIRS ci-dessous
+//     2. un appel à EGGS.trouver("son-id") là où il se déclenche
+//     Le compteur, le panneau et la sauvegarde suivent seuls.
 // ============================================================
 
-const ANOMALIES = [
+const SOUVENIRS = [
   {
-    id: "konami",
-    nom: "CODE DE SERVICE",
-    indice: "Une vieille séquence de manette. Elle marche partout, même ici.",
-    secret: "↑↑↓↓←→←→BA. Trente ans que ça ouvre des portes.",
+    id: "sequence",
+    nom: "SÉQUENCE OUBLIÉE",
+    indice: "Une suite de touches que tout le monde connaît, et que personne n'a apprise.",
+    secret: "↑↑↓↓←→←→BA. Trente ans qu'elle ouvre des portes.",
   },
   {
-    id: "sudo",
-    nom: "ABUS D'AUTORITÉ",
-    indice: "Le terminal n'aime pas qu'on lui parle de haut.",
-    secret: "L'inspecteur n'est pas administrateur. L'inspecteur n'a jamais été administrateur.",
+    id: "repos",
+    nom: "REPOS PROLONGÉ",
+    indice: "Le site de grâce ne demande rien. On peut y rester.",
+    secret: "S'asseoir trois fois sans rien faire d'autre. C'est aussi une manière de visiter.",
   },
   {
-    id: "nuit",
-    nom: "COUPURE DE COURANT",
-    indice: "Le bureau garde des choses pour l'obscurité.",
-    secret: "Quelqu'un a écrit sous la lampe, en encre invisible. Il fallait éteindre.",
+    id: "archiviste",
+    nom: "ARCHIVISTE",
+    indice: "Un inventaire ne se parcourt pas : il s'examine, objet par objet.",
+    secret: "Les dix objets ont été examinés. Peu de visiteurs vont jusqu'au bout.",
   },
   {
-    id: "plante",
-    nom: "LA PLANTE DU BUREAU",
-    indice: "Personne ne l'arrose. Elle est là depuis plus longtemps que vous.",
-    secret: "Elle est en plastique. Elle vous a vu tamponner toute la journée.",
+    id: "eloge",
+    nom: "ÉLOGE",
+    indice: "Un message laissé au sol attend d'être approuvé.",
+    secret: "Merci. Les éloges ne servent à rien, et pourtant.",
   },
   {
-    id: "affiche",
-    nom: "PROPAGANDE MURALE",
-    indice: "Le slogan officiel n'est pas gravé dans le marbre.",
-    secret: "Les slogans changent. Le mur, lui, reste.",
+    id: "attiser",
+    nom: "ATTISER",
+    indice: "La lueur réagit si l'on insiste.",
+    secret: "Sept fois. La flamme monte, puis retombe. Elle fait cela depuis toujours.",
   },
   {
-    id: "auto-tampon",
-    nom: "CONFLIT D'INTÉRÊT",
-    indice: "Contrôler tout le monde, y compris soi-même.",
-    secret: "Se tamponner soi-même : la seule décision vraiment libre du poste.",
+    id: "chute",
+    nom: "LA CHUTE",
+    indice: "Il y a un mot à taper que ce lieu n'attend pas.",
+    secret: "Écrire « mourir » n'importe où. Tout le monde tombe une première fois.",
   },
   {
-    id: "impitoyable",
-    nom: "L'INSPECTEUR DE FER",
-    indice: "Trois refus d'affilée. Sans trembler.",
-    secret: "Le bureau vous félicite. Personne d'autre ne le fera.",
+    id: "ascension",
+    nom: "PAS DE PLUS",
+    indice: "Un niveau se gagne. Ou se réclame.",
+    secret: "Vingt-sept. Le suivant demandera un dépôt de plus.",
   },
   {
-    id: "zele",
-    nom: "EXCÈS DE ZÈLE",
-    indice: "Tout approuver, sans exception, jusqu'au dernier dossier.",
-    secret: "Un inspecteur qui approuve tout n'inspecte rien. Mais quelle journée agréable.",
+    id: "contemplation",
+    nom: "CONTEMPLATION",
+    indice: "Ne rien faire, assez longtemps pour que le lieu s'en aperçoive.",
+    secret: "Deux minutes immobile au site de grâce. Le silence était voulu.",
   },
 ];
 
 const EGGS = (() => {
   "use strict";
 
-  const CLE = "bureau.anomalies";
+  const CLE = "grace.souvenirs";
   const abonnes = [];
 
   const charger = () => {
     try { return new Set(JSON.parse(localStorage.getItem(CLE)) || []); }
     catch { return new Set(); }
   };
-  const trouvees = charger();
-
+  const trouves = charger();
   const sauver = () => {
-    try { localStorage.setItem(CLE, JSON.stringify([...trouvees])); } catch { /* mode privé */ }
+    try { localStorage.setItem(CLE, JSON.stringify([...trouves])); } catch { /* navigation privée */ }
   };
 
   return {
-    get total() { return ANOMALIES.length; },
-    get nombre() { return trouvees.size; },
-    connue(id) { return trouvees.has(id); },
-    liste() { return ANOMALIES; },
+    get total() { return SOUVENIRS.length; },
+    get nombre() { return trouves.size; },
+    connu(id) { return trouves.has(id); },
+    liste() { return SOUVENIRS; },
 
-    /** Déclenche une anomalie. Sans effet si déjà trouvée. */
     trouver(id) {
-      const a = ANOMALIES.find((x) => x.id === id);
-      if (!a || trouvees.has(id)) return false;
-      trouvees.add(id);
+      const s = SOUVENIRS.find((x) => x.id === id);
+      if (!s || trouves.has(id)) return false;
+      trouves.add(id);
       sauver();
-      abonnes.forEach((f) => f(a));
+      abonnes.forEach((f) => f(s));
       return true;
     },
 
-    /** Prévenu à chaque nouvelle anomalie : EGGS.surDecouverte(a => ...) */
     surDecouverte(fn) { abonnes.push(fn); },
+    effacer() { trouves.clear(); sauver(); },
 
-    effacer() { trouvees.clear(); sauver(); },
-
-    /** Surveille la séquence Konami sur tout le document. */
-    ecouterKonami() {
-      const seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
-                   "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
-      let i = 0;
+    /** Konami + le mot « mourir », écoutés partout. */
+    ecouter(surMort) {
+      const konami = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+                      "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+      let i = 0, tampon = "";
       document.addEventListener("keydown", (e) => {
         const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-        i = (k === seq[i]) ? i + 1 : (k === seq[0] ? 1 : 0);
-        if (i === seq.length) { i = 0; EGGS.trouver("konami"); }
+        i = (k === konami[i]) ? i + 1 : (k === konami[0] ? 1 : 0);
+        if (i === konami.length) { i = 0; EGGS.trouver("sequence"); }
+
+        if (e.key.length === 1) {
+          tampon = (tampon + e.key.toLowerCase()).slice(-8);
+          if (tampon.includes("mourir")) {
+            tampon = "";
+            EGGS.trouver("chute");
+            surMort && surMort();
+          }
+        }
       });
     },
   };

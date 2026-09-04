@@ -4,7 +4,7 @@ Le jeu **Undercover** à jouer entre potes sur **un seul téléphone**, avec vos
 
 **▶ Jouer :** https://ayoubo22.github.io/undercover/
 
-**▶ Portfolio interactif :** https://ayoubo22.github.io/undercover/portfolio/ — un poste-frontière où chaque projet vient présenter ses papiers ([code](portfolio/)).
+**▶ Portfolio interactif :** https://ayoubo22.github.io/undercover/portfolio/ — un site de grâce où chaque projet est un objet à examiner ([code](portfolio/)).
 
 ## Comment jouer
 

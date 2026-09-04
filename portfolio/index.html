@@ -3,221 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0b0e0c">
-<title>BUREAU DES ENTRÉES — Ayoub Ouaadoud</title>
-<meta name="description" content="Portfolio interactif : poste de contrôle, documents à inspecter, tampons et terminal.">
+<meta name="theme-color" content="#08070a">
+<title>AYOUB OUAADOUD — Site de Grâce</title>
+<meta name="description" content="Portfolio interactif : un site de grâce, un inventaire, et dix objets à examiner.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/portfolio.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛂</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='34' fill='none' stroke='%23c9a227' stroke-width='6'/><circle cx='50' cy='50' r='10' fill='%23f0dfa8'/></svg>">
 </head>
-<body class="booting">
+<body>
 
-<!-- ================= HABILLAGE CRT ================= -->
-<div class="crt" aria-hidden="true">
-  <div class="crt-lines"></div>
-  <div class="crt-glow"></div>
-  <div class="crt-flicker"></div>
-</div>
+<canvas id="braises" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
 
-<!-- ================= 1. AMORÇAGE ================= -->
-<section id="layer-boot" class="layer active">
-  <div class="boot-wrap">
-    <pre id="boot-log" class="boot-log"></pre>
-    <button id="boot-enter" class="boot-enter" hidden>
-      &gt; APPUYEZ POUR PRENDRE VOTRE POSTE
-    </button>
-    <p class="boot-hint" id="boot-hint" hidden>le son est désactivé — vous pourrez l'allumer en haut à droite</p>
+<!-- ================= OUVERTURE ================= -->
+<section id="ecran-ouverture" class="ecran active">
+  <div class="ouverture-bloc">
+    <p class="ouverture-sur">PORTFOLIO</p>
+    <h1 class="ouverture-titre">AYOUB<span class="ouverture-sep">·</span>OUAADOUD</h1>
+    <p class="ouverture-sous">DÉVELOPPEUR — BRUXELLES</p>
+    <div class="filet"><span class="filet-losange"></span></div>
+    <button id="entrer" class="entrer">APPUYEZ SUR ENTRÉE</button>
+    <p class="ouverture-note">le son est éteint — vous pourrez l'allumer en haut à droite</p>
   </div>
 </section>
 
-<!-- ================= 2. BRIEFING DU JOUR ================= -->
-<section id="layer-brief" class="layer">
-  <div class="brief">
-    <p class="brief-day" id="brief-day">JOUR 1</p>
-    <h1 class="brief-title" id="brief-title">BUREAU DES ENTRÉES</h1>
-    <div class="brief-rule"></div>
-    <p class="brief-line" id="brief-line"></p>
-    <ul class="brief-list" id="brief-list"></ul>
-    <button id="brief-go" class="btn btn-stamp">COMMENCER LE SERVICE</button>
-  </div>
-</section>
+<!-- ================= LE JEU ================= -->
+<main id="jeu" hidden>
 
-<!-- ================= 3. LE POSTE ================= -->
-<main id="layer-desk" class="layer">
-
-  <header class="hud">
-    <div class="hud-left">
-      <span class="hud-seal">◼</span>
-      <span class="hud-state" id="hud-state">ÉTAT DE BRUXELLIA</span>
-      <span class="hud-sep">·</span>
-      <span id="hud-day">JOUR 1</span>
-      <span class="hud-sep">·</span>
-      <span id="hud-clock">09:00</span>
-    </div>
-    <div class="hud-right">
-      <button class="hud-btn" id="btn-dossier" title="Dossiers approuvés">▤ <span id="hud-count">0</span>/<span id="hud-total">0</span></button>
-      <button class="hud-btn" id="btn-eggs" title="Anomalies détectées">◈ <span id="egg-count">0</span>/<span id="egg-total">0</span></button>
-      <button class="hud-btn" id="btn-sound" title="Son" aria-pressed="false">♪ OFF</button>
-      <button class="hud-btn" id="btn-help" title="Aide">?</button>
-    </div>
+  <header class="bandeau">
+    <button class="bandeau-retour" id="btn-retour" hidden>◄ RETOUR</button>
+    <span class="bandeau-porteur" id="bandeau-porteur">AYOUB OUAADOUD</span>
+    <span class="bandeau-lieu">NIVEAU <b id="bandeau-niveau">26</b></span>
+    <nav class="bandeau-actions">
+      <button class="lien-sobre" id="btn-souvenirs">SOUVENIRS <b id="cpt-souvenirs">0</b>/<b id="cpt-total">8</b></button>
+      <button class="lien-sobre" id="btn-son" aria-pressed="false">SON : ÉTEINT</button>
+    </nav>
   </header>
 
-  <!-- ---- guichet ---- -->
-  <section class="booth">
-    <div class="booth-wall">
-      <div class="wall-poster" id="wall-poster">
-        <span class="poster-glyph">▲</span>
-        <span class="poster-text" id="poster-text">L'ORDRE PAR LE FORMULAIRE</span>
-      </div>
-      <div class="wall-clock" aria-hidden="true"><span class="wall-clock-hand"></span></div>
-      <div class="wall-plant" id="wall-plant" title="…">❦</div>
-    </div>
-
-    <div class="booth-window">
-      <div class="window-frame">
-        <div class="window-glass">
-          <div class="queue-shadows" id="queue-shadows"></div>
-          <div class="applicant" id="applicant" hidden>
-            <div class="applicant-portrait" id="applicant-portrait"></div>
-          </div>
-          <div class="window-empty" id="window-empty">— GUICHET LIBRE —</div>
-        </div>
-        <div class="window-sill"></div>
-      </div>
-
-      <div class="booth-side">
-        <div class="queue-box">
-          <span class="queue-label">EN ATTENTE</span>
-          <span class="queue-num" id="queue-num">0</span>
-        </div>
-        <button class="buzzer" id="buzzer">
-          <span class="buzzer-dome"></span>
-          <span class="buzzer-label">SUIVANT</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="dialogue" id="dialogue" hidden>
-      <span class="dialogue-who" id="dialogue-who"></span>
-      <p class="dialogue-text" id="dialogue-text"></p>
+  <!-- ---- site de grâce ---- -->
+  <section id="ecran-grace" class="ecran active">
+    <canvas id="lueur" aria-hidden="true"></canvas>
+    <div class="grace-bloc">
+      <p class="grace-sur">SITE DE GRÂCE DÉCOUVERT</p>
+      <h2 class="grace-titre">L'ATELIER</h2>
+      <nav class="menu" id="menu">
+        <button class="menu-item" data-ecran="ecran-inventaire"><span class="menu-marque"></span>INVENTAIRE<span class="menu-note">dix objets</span></button>
+        <button class="menu-item" data-ecran="ecran-attributs"><span class="menu-marque"></span>ATTRIBUTS<span class="menu-note">ce que je sais faire</span></button>
+        <button class="menu-item" data-ecran="ecran-chronique"><span class="menu-marque"></span>CHRONIQUE<span class="menu-note">ce qui a précédé</span></button>
+        <button class="menu-item" data-ecran="ecran-missives"><span class="menu-marque"></span>MISSIVES<span class="menu-note">me joindre</span></button>
+        <button class="menu-item menu-repos" data-action="repos"><span class="menu-marque"></span>SE REPOSER<span class="menu-note">reprendre souffle</span></button>
+      </nav>
     </div>
   </section>
 
-  <!-- ---- bureau ---- -->
-  <section class="desk" id="desk">
-    <div class="desk-edge"></div>
-    <div class="desk-surface" id="desk-surface">
-      <p class="desk-hint" id="desk-hint">Appuyez sur <b>SUIVANT</b> pour appeler le premier dossier.</p>
+  <!-- ---- inventaire ---- -->
+  <section id="ecran-inventaire" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">INVENTAIRE</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
     </div>
-
-    <aside class="tray">
-      <button class="tool tool-book" id="tool-book">
-        <span class="tool-ico">▤</span><span class="tool-name">RÈGLEMENT</span>
-      </button>
-      <button class="tool tool-term" id="tool-term">
-        <span class="tool-ico">▮</span><span class="tool-name">TERMINAL</span>
-      </button>
-      <div class="stamps">
-        <button class="stamp-tool stamp-ok" id="stamp-ok" data-verdict="ok">
-          <span class="stamp-face">APPROUVÉ</span>
-        </button>
-        <button class="stamp-tool stamp-no" id="stamp-no" data-verdict="no">
-          <span class="stamp-face">REFUSÉ</span>
-        </button>
-      </div>
-      <button class="tool tool-lamp" id="tool-lamp" title="Lampe de bureau">
-        <span class="tool-ico">☼</span><span class="tool-name">LAMPE</span>
-      </button>
-    </aside>
+    <div class="inv">
+      <div class="inv-casiers" id="inv-casiers" role="listbox" aria-label="Objets"></div>
+      <article class="fiche" id="fiche"></article>
+    </div>
   </section>
 
-  <div class="stamp-cursor" id="stamp-cursor" hidden></div>
+  <!-- ---- attributs ---- -->
+  <section id="ecran-attributs" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">ATTRIBUTS</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+    </div>
+    <div class="attr-corps">
+      <div class="attr-porteur">
+        <button class="attr-niveau" id="attr-niveau">
+          <span class="attr-niveau-lab">NIVEAU</span>
+          <span class="attr-niveau-val">26</span>
+          <span class="attr-niveau-note">un par dépôt public ou privé</span>
+        </button>
+      </div>
+      <div class="attr-liste" id="attr-liste"></div>
+      <div class="attr-memoire" id="attr-memoire"></div>
+    </div>
+  </section>
+
+  <!-- ---- chronique ---- -->
+  <section id="ecran-chronique" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">CHRONIQUE</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+    </div>
+    <ol class="chronique" id="chronique"></ol>
+  </section>
+
+  <!-- ---- missives ---- -->
+  <section id="ecran-missives" class="ecran">
+    <div class="ecran-tete">
+      <h2 class="ecran-titre">MISSIVES</h2>
+      <div class="filet"><span class="filet-losange"></span></div>
+      <p class="ecran-note">Messages laissés au sol par le porteur.</p>
+    </div>
+    <div class="missives" id="missives"></div>
+  </section>
 </main>
 
-<!-- ================= SUPERPOSITIONS ================= -->
+<!-- ================= SURIMPRESSIONS ================= -->
+<div id="carton" class="carton" hidden><span class="carton-nom"></span></div>
+<div id="peri" class="peri" hidden><span>VOUS AVEZ PÉRI</span></div>
 
-<!-- règlement -->
-<div class="overlay" id="ov-book" hidden>
-  <div class="book">
-    <div class="book-head">
-      <span class="book-title">RÈGLEMENT DU BUREAU</span>
-      <button class="x" data-close="ov-book">✕</button>
+<div id="voile-souvenirs" class="voile" hidden>
+  <div class="panneau">
+    <div class="panneau-tete">
+      <h3>SOUVENIRS</h3>
+      <button class="panneau-fermer" data-fermer="voile-souvenirs">✕</button>
     </div>
-    <nav class="book-tabs" id="book-tabs"></nav>
-    <div class="book-page" id="book-page"></div>
+    <div class="panneau-corps" id="liste-souvenirs"></div>
   </div>
 </div>
 
-<!-- terminal -->
-<div class="overlay" id="ov-term" hidden>
-  <div class="terminal">
-    <div class="term-head">
-      <span class="term-title">TERMINAL DE SERVICE — v0.9</span>
-      <button class="x" data-close="ov-term">✕</button>
-    </div>
-    <div class="term-body" id="term-body"></div>
-    <form class="term-form" id="term-form" autocomplete="off">
-      <span class="term-prompt">inspecteur@bureau:~$</span>
-      <input class="term-input" id="term-input" spellcheck="false" autocomplete="off">
-    </form>
-  </div>
-</div>
-
-<!-- dossiers approuvés -->
-<div class="overlay" id="ov-dossier" hidden>
-  <div class="panel">
-    <div class="panel-head">
-      <span class="panel-title">DOSSIERS TRAITÉS</span>
-      <button class="x" data-close="ov-dossier">✕</button>
-    </div>
-    <div class="panel-body" id="dossier-body"></div>
-  </div>
-</div>
-
-<!-- anomalies / easter eggs -->
-<div class="overlay" id="ov-eggs" hidden>
-  <div class="panel">
-    <div class="panel-head">
-      <span class="panel-title">REGISTRE DES ANOMALIES</span>
-      <button class="x" data-close="ov-eggs">✕</button>
-    </div>
-    <div class="panel-body" id="eggs-body"></div>
-  </div>
-</div>
-
-<!-- aide -->
-<div class="overlay" id="ov-help" hidden>
-  <div class="panel panel-sm">
-    <div class="panel-head">
-      <span class="panel-title">CONSIGNES</span>
-      <button class="x" data-close="ov-help">✕</button>
-    </div>
-    <div class="panel-body">
-      <ul class="help-list">
-        <li><b>SUIVANT</b> — appelle le dossier suivant au guichet.</li>
-        <li><b>Clic sur un document</b> — l'agrandit. Re-clic : le repose.</li>
-        <li><b>Glisser</b> — déplace les papiers sur le bureau.</li>
-        <li><b>APPROUVÉ / REFUSÉ</b> — prenez le tampon, puis frappez le passeport.</li>
-        <li><b>RÈGLEMENT</b> — qui je suis, ce que je sais faire, comment me joindre.</li>
-        <li><b>TERMINAL</b> — tapez <code>aide</code>. Certaines commandes ne sont pas dans la liste.</li>
-        <li><b>◈</b> — anomalies cachées dans le bureau. Elles ne se donnent pas.</li>
-      </ul>
-      <p class="help-foot">Aucun verdict n'est le bon. Le bureau s'en moque. Vous non.</p>
-    </div>
-  </div>
-</div>
-
-<!-- toast -->
-<div class="toast" id="toast" hidden></div>
+<div id="annonce" class="annonce" hidden></div>
 
 <script src="js/data.js"></script>
 <script src="js/audio.js"></script>
-<script src="js/portraits.js"></script>
+<script src="js/ambiance.js"></script>
+<script src="js/sigils.js"></script>
 <script src="js/eggs.js"></script>
-<script src="js/terminal.js"></script>
-<script src="js/desk.js"></script>
+<script src="js/ui.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
