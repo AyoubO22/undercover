@@ -104,17 +104,51 @@ const SFX = (() => {
       partielle(330, 2.0, 0.03, "triangle", 0.15);
     },
 
-    // nappe de fond très basse
+    // objet obtenu : une note claire qui s'ouvre
+    obtenir() {
+      if (!pret()) return;
+      partielle(392, 1.8, 0.13);
+      partielle(523, 1.5, 0.08, "sine", 0.06);
+      partielle(784, 1.2, 0.05, "triangle", 0.12);
+    },
+
+    // nappe de fond : vent bas et chœur lointain
     souffle(demarrer) {
       if (!pret() || !demarrer || souffle) return;
-      const s = bruit(), f = ctx.createBiquadFilter(), g = ctx.createGain();
-      s.loop = true;
-      f.type = "lowpass"; f.frequency.value = 190; f.Q.value = 0.6;
-      g.gain.setValueAtTime(0.0001, ctx.currentTime);
-      g.gain.linearRampToValueAtTime(0.055, ctx.currentTime + 3);
-      s.connect(f).connect(g).connect(master);
-      s.start();
-      souffle = s;
+
+      // le vent
+      const v = bruit(), fv = ctx.createBiquadFilter(), gv = ctx.createGain();
+      v.loop = true;
+      fv.type = "lowpass"; fv.frequency.value = 210; fv.Q.value = 0.7;
+      gv.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gv.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 4);
+      v.connect(fv).connect(gv).connect(master);
+      v.start();
+
+      // le chœur : trois quintes désaccordées, très lentement modulées
+      const choeur = ctx.createGain();
+      choeur.gain.setValueAtTime(0.0001, ctx.currentTime);
+      choeur.gain.linearRampToValueAtTime(0.035, ctx.currentTime + 8);
+      const fc = ctx.createBiquadFilter();
+      fc.type = "lowpass"; fc.frequency.value = 900;
+      choeur.connect(fc).connect(master);
+
+      [98, 147, 196, 294].forEach((f, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = f * (1 + (i - 1.5) * 0.0016);   // léger désaccord
+        g.gain.value = 0.9 / (i + 1.6);
+        // respiration : une oscillation très lente de l'amplitude
+        const lfo = ctx.createOscillator(), lfoG = ctx.createGain();
+        lfo.frequency.value = 0.03 + i * 0.011;
+        lfoG.gain.value = g.gain.value * 0.55;
+        lfo.connect(lfoG).connect(g.gain);
+        lfo.start();
+        o.connect(g).connect(choeur);
+        o.start();
+      });
+
+      souffle = v;
     },
   };
 })();

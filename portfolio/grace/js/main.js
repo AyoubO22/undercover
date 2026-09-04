@@ -14,13 +14,15 @@
   const entrer = () => {
     const ouverture = $("#ecran-ouverture");
     ouverture.classList.add("sortant");
+    document.body.classList.remove("ouverture");
+    document.body.classList.add("halte");
     setTimeout(() => {
       ouverture.classList.remove("active", "sortant");
       ouverture.hidden = true;
       $("#jeu").hidden = false;
       requestAnimationFrame(() => AMBIANCE.grace($("#lueur")));
       veiller();
-    }, 700);
+    }, 900);
   };
 
   /* ---------- contemplation ---------- */
@@ -95,10 +97,9 @@
 
     // réclamer un niveau
     $("#attr-niveau").addEventListener("click", (e) => {
-      const val = e.currentTarget.querySelector(".attr-niveau-val");
-      val.textContent = PORTEUR.niveau + 1;
+      e.currentTarget.querySelector("#niv-val").textContent = PORTEUR.niveau + 1;
       e.currentTarget.classList.add("monte");
-      SFX.choisir();
+      SFX.obtenir();
       EGGS.trouver("ascension");
     });
 
@@ -137,5 +138,6 @@
   /* ---------- démarrage ---------- */
   UI.init();
   brancher();
+  AMBIANCE.arbre($("#arbre"));
   AMBIANCE.braises($("#braises"));
 })();
